@@ -1,10 +1,15 @@
+<<<<<<< HEAD
+﻿using System;
+=======
 using System;
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -12,10 +17,12 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using Manina.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Synapse_Z
@@ -50,6 +57,9 @@ namespace Synapse_Z
         private string tabsFolderPath;
         private ContextMenuStrip tabContextMenu;
 
+        private static readonly HttpClient client = new HttpClient();
+        private const string currentVersion = "v1.0.4"; // Replace with the current version of your application
+
         private static SynapseZ _instance;
 
         public static SynapseZ Instance
@@ -71,6 +81,24 @@ namespace Synapse_Z
 
         public SynapseZ()
         {
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string synapseZPath = Path.Combine(currentDirectory, "Synapse-Z Boostrapper.exe");
+            string synapsePath = Path.Combine(currentDirectory, "Synapse Bootstrapper.exe");
+
+            if (File.Exists(synapseZPath) && File.Exists(synapsePath))
+            {
+                try
+                {
+                    File.Delete(synapseZPath);
+                    this.Close();
+                    Process.Start(synapsePath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
             GlobalVariables.LoadSettingsAsync();
             // Initialize AutoInjectManager with a reference to this form
             AutoInjectManager.Initialize(this);
@@ -92,7 +120,7 @@ namespace Synapse_Z
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_HIDE);
 
-
+            synlabel.Text = $"Synapse Z - {currentVersion}";
             _instance = this;
 
             // Initialize the injection timer
@@ -162,10 +190,78 @@ namespace Synapse_Z
             this.FormClosing += SynapseZ_FormClosing;
             GlobalVariables.RegisterOnTopMostGlobalChanged(UpdateTopMost);
 
-           
 
-          
+            CheckForUpdates();
+
+
         }
+
+        private async void CheckForUpdates()
+        {
+            string owner = "Coolmandfgfgdvcgfg"; // Replace with the repository owner's name
+            string repo = "Synapse-ZUI"; // Replace with the repository name
+
+            try
+            {
+                var latestRelease = await GetLatestRelease(owner, repo);
+                string latestVersion = latestRelease["tag_name"].ToString();
+
+                if (IsNewVersionAvailable(currentVersion, latestVersion))
+                {
+                    this.TopMost = false;
+                   MessageBox.Show("A new update is available. The application will now update.", "Update Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RunBootstrapper();
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while checking for updates: {ex.Message}", "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static async Task<JObject> GetLatestRelease(string owner, string repo)
+        {
+            string url = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; GrandCircus/1.0)");
+            var response = await client.GetStringAsync(url);
+            return JObject.Parse(response);
+        }
+
+        private bool IsNewVersionAvailable(string currentVersion, string latestVersion)
+        {
+            Version current = ParseVersion(currentVersion);
+            Version latest = ParseVersion(latestVersion);
+           // MessageBox.Show(currentVersion);
+            //MessageBox.Show(latestVersion);
+            return latest > current;
+        }
+
+        private Version ParseVersion(string version)
+        {
+            // Remove any non-numeric prefix (like 'v')
+            string numericVersion = Regex.Replace(version, @"^[^\d]*", "");
+            return new Version(numericVersion);
+        }
+
+        private void RunBootstrapper()
+        {
+            string bootstrapperPath = Path.Combine(Directory.GetCurrentDirectory(), "Synapse Bootstrapper.exe");
+            if (File.Exists(bootstrapperPath))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = bootstrapperPath,
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                });
+            }
+            else
+            {
+                MessageBox.Show("Bootstrapper not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private void UpdateTopMost(bool topMost)
         {
@@ -181,7 +277,11 @@ namespace Synapse_Z
 
                 // Save all tabs asynchronously
                 await SaveAllTabsAsync();
-                await GlobalVariables.SaveSettingsAsync();
+
+                if (GlobalVariables.noSave == false) {
+                    await GlobalVariables.SaveSettingsAsync();
+                }
+                
 
                 // After saving, close the form
                 e.Cancel = false;
@@ -499,10 +599,9 @@ namespace Synapse_Z
             if (Scriptbox.SelectedItem != null)
             {
                 string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts", Scriptbox.SelectedItem.ToString());
-                string fileContent = File.ReadAllText(filePath);
                 // Load script into editor functionality
-                string unescapedString = EscapeJavaScriptString(fileContent);
-                string script = $"SetText(`{unescapedString}`);";
+                var tabData = File.ReadAllText(filePath);
+                string script = $"SetText(`{EscapeJavaScriptString(tabData)}`);";
                 await currentWebView2.CoreWebView2.ExecuteScriptAsync(script);
             }
         }
@@ -598,13 +697,12 @@ namespace Synapse_Z
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
-            SetTopMost(this.Handle); // Set the form as topmost when the handle is created
+            SetTopMost(this.Handle);
         }
 
         private void SynapseZ_Load(object sender, EventArgs e)
         {
-            this.TopMost = GlobalVariables.TopMostGlobal;
-            this.ShowInTaskbar = true;
+           
             // Start the AutoInject task if AutoInject is true
             if (GlobalVariables.AutoInject)
             {
@@ -618,6 +716,9 @@ namespace Synapse_Z
             // Add the initial "Add Tab" button
             AddNewTabButton();
 
+            this.BringToFront();
+            this.TopMost = GlobalVariables.TopMostGlobal;
+            this.ShowInTaskbar = true;
         }
 
 
@@ -665,7 +766,11 @@ namespace Synapse_Z
         private void InjTimer_Tick(object sender, EventArgs e)
         {
             if (process == null) return;
+<<<<<<< HEAD
+            UpdateLabelText($"Synapse Z - {currentVersion} (Injecting...)");
+=======
             UpdateLabelText($"Synapse Z - v1.0.1 (Injecting...)");
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
             process.Refresh();
             IntPtr mainWindowHandle = process.MainWindowHandle;
             if (mainWindowHandle != IntPtr.Zero)
@@ -681,7 +786,11 @@ namespace Synapse_Z
         private void WaitForProcessToHide(object sender, EventArgs e)
         {
 
+<<<<<<< HEAD
+            UpdateLabelText($"Synapse Z - {currentVersion} (Scanning...)");
+=======
             UpdateLabelText($"Synapse Z - v1.0.1 (Scanning...)");
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
             process.Refresh();
             IntPtr mainWindowHandle = process.MainWindowHandle;
             if (mainWindowHandle == IntPtr.Zero)
@@ -1189,6 +1298,9 @@ namespace Synapse_Z
                 }
             }
 
+<<<<<<< HEAD
+          
+=======
             // Check if PID file exists
             string pidFilePath = Path.Combine(binDirectory, "pid.txt");
             if (File.Exists(pidFilePath))
@@ -1208,6 +1320,7 @@ namespace Synapse_Z
 
             // Save current PID to file
             File.WriteAllText(pidFilePath, robloxProcesses[0].Id.ToString());
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
 
             // Check for auth.syn and launch.syn files
             bool authSynExists = File.Exists(Path.Combine(binDirectory, "auth.syn"));
@@ -1226,6 +1339,23 @@ namespace Synapse_Z
                 MessageBox.Show("Could not find auth.syn", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            string pidFilePath = Path.Combine(binDirectory, "pid.txt");
+            if (File.Exists(pidFilePath))
+            {
+                int savedPid = int.Parse(File.ReadAllText(pidFilePath));
+                if (robloxProcesses[0].Id == savedPid)
+                {
+                    UpdateLabelText($"Synapse Z - {currentVersion} (Checking Whitelist...)");
+                    robloxProcesses[0].EnableRaisingEvents = true;
+                    robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
+                    await Task.Delay(100);
+                    GlobalVariables.injecting = true;
+                    UpdateLabelText($"Synapse Z - {currentVersion} (Re-Injecting...)");
+                    await Task.Delay(500);
+                    Done();
+                    return;
+                }
+            }
 
             if (!backgroundWorker.IsBusy)
             {
@@ -1234,50 +1364,101 @@ namespace Synapse_Z
 
             if (!authSynExists || !launchSynExists)
             {
-                // Prompt the user to enter the key
-                using (var promptForm = new AccountKeyPrompt())
+                if (GlobalVariables.CurrentKey != null & GlobalVariables.CurrentKey != "")
                 {
-                    if (promptForm.ShowDialog(this) == DialogResult.OK)
+                    robloxProcesses[0].EnableRaisingEvents = true;
+                    robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
+                    UpdateLabelText($"Synapse Z - {currentVersion} (Checking Whitelist...)");
+                    string key = GlobalVariables.CurrentKey;
+                    if (string.IsNullOrEmpty(key))
                     {
+<<<<<<< HEAD
+                        MessageBox.Show("No key entered. Aborting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    GlobalVariables.injecting = true;
+
+                    // Start the process and send the key
+                    var startInfo = new ProcessStartInfo
+                    {
+                        FileName = path,
+                        WorkingDirectory = Path.GetDirectoryName(path),
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        RedirectStandardInput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true // Ensure the window is hidden
+                    };
+
+                    process = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
+                    process.Exited += (s, e) => Done();
+
+                    process.Start();
+                    ShowWindow(process.MainWindowHandle, SW_HIDE); // Hide the process window
+                    using (StreamWriter writer = process.StandardInput)
+                    {
+                        writer.WriteLine(key);
+                    }
+
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+
+                    injTimer.Start();
+                }
+                else
+                {
+                    // Prompt the user to enter the key
+                    using (var promptForm = new AccountKeyPrompt())
+                    {
+                        if (promptForm.ShowDialog(this) == DialogResult.OK)
+=======
                         robloxProcesses[0].EnableRaisingEvents = true;
                         robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
                         UpdateLabelText("Synapse Z - v1.0.1 (Checking Whitelist...)");
                         string key = promptForm.Key;
                         if (string.IsNullOrEmpty(key))
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
                         {
-                            MessageBox.Show("No key entered. Aborting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
+                            robloxProcesses[0].EnableRaisingEvents = true;
+                            robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
+                            UpdateLabelText($"Synapse Z - {currentVersion} (Checking Whitelist...)");
+                            string key = promptForm.Key;
+                            if (string.IsNullOrEmpty(key))
+                            {
+                                MessageBox.Show("No key entered. Aborting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                            GlobalVariables.injecting = true;
+
+                            // Start the process and send the key
+                            var startInfo = new ProcessStartInfo
+                            {
+                                FileName = path,
+                                WorkingDirectory = Path.GetDirectoryName(path),
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true,
+                                RedirectStandardInput = true,
+                                UseShellExecute = false,
+                                CreateNoWindow = true // Ensure the window is hidden
+                            };
+
+                            process = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
+                            process.Exited += (s, e) => Done();
+
+                            process.Start();
+                            ShowWindow(process.MainWindowHandle, SW_HIDE); // Hide the process window
+                            using (StreamWriter writer = process.StandardInput)
+                            {
+                                writer.WriteLine(key);
+                            }
+
+                            process.BeginOutputReadLine();
+                            process.BeginErrorReadLine();
+
+                            injTimer.Start();
+
+
                         }
-                        GlobalVariables.injecting = true;
-
-                        // Start the process and send the key
-                        var startInfo = new ProcessStartInfo
-                        {
-                            FileName = path,
-                            WorkingDirectory = Path.GetDirectoryName(path),
-                            RedirectStandardOutput = true,
-                            RedirectStandardError = true,
-                            RedirectStandardInput = true,
-                            UseShellExecute = false,
-                            CreateNoWindow = true // Ensure the window is hidden
-                        };
-
-                        process = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
-                        process.Exited += (s, e) => Done();
-
-                        process.Start();
-                        ShowWindow(process.MainWindowHandle, SW_HIDE); // Hide the process window
-                        using (StreamWriter writer = process.StandardInput)
-                        {
-                            writer.WriteLine(key);
-                        }
-
-                        process.BeginOutputReadLine();
-                        process.BeginErrorReadLine();
-                        
-                        injTimer.Start();
-
-                      
                     }
                 }
             }
@@ -1292,10 +1473,17 @@ namespace Synapse_Z
 
                 if (autoInject)
                 {
+<<<<<<< HEAD
+                    UpdateLabelText($"Synapse Z - {currentVersion} (Waiting for roblox...)");
+                    await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
+                }
+                UpdateLabelText($"Synapse Z - {currentVersion} (Checking Whitelist...)");
+=======
                     UpdateLabelText("Synapse Z - v1.0.1 (Waiting for roblox...)");
                     await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
                 }
                 UpdateLabelText("Synapse Z - v1.0.1 (Checking Whitelist...)");
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
 
                 var startInfo = new ProcessStartInfo
                 {
@@ -1334,7 +1522,24 @@ namespace Synapse_Z
 
         private async void Abort()
         {
-           
+
+            if (GlobalVariables.injecting == true)
+            {
+                UpdateLabelText($"Synapse Z - {currentVersion} (Injection Aborted)");
+            }
+            GlobalVariables.injecting = false;
+            GlobalVariables.isDone = false;
+            string binDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+            if (!Directory.Exists(binDirectory))
+            {
+                Directory.CreateDirectory(binDirectory);
+            }
+
+            string pidFilePath = Path.Combine(binDirectory, "pid.txt");
+            if (File.Exists(pidFilePath))
+            {
+                File.Delete(pidFilePath);
+            }
             injTimer.Stop();
 
             if (process != null && !process.HasExited)
@@ -1342,6 +1547,12 @@ namespace Synapse_Z
                 process.Kill();
                 process = null;
             }
+<<<<<<< HEAD
+            
+            
+            await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
+            UpdateLabelText($"Synapse Z - {currentVersion}");
+=======
             if (GlobalVariables.injecting == true)
             {
                 UpdateLabelText("Synapse Z - v1.0.1 (Injection Aborted)");
@@ -1351,6 +1562,7 @@ namespace Synapse_Z
             
             await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
             UpdateLabelText("Synapse Z - v1.0.1");
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
             //MessageBox.Show("Roblox process has exited. Injection aborted.", "Aborted", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1395,7 +1607,11 @@ namespace Synapse_Z
         {
             if (GlobalVariables.isDone) return;
             if (!GlobalVariables.injecting) return;
+<<<<<<< HEAD
+            UpdateLabelText($"Synapse Z - {currentVersion} (Scanning...)");
+=======
             UpdateLabelText("Synapse Z - v1.0.1 (Scanning...)");
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
             GlobalVariables.isDone = true;
             GlobalVariables.injecting = false;
 
@@ -1407,9 +1623,49 @@ namespace Synapse_Z
                 process.Dispose();
             }
             await Task.Delay(500);
+<<<<<<< HEAD
+            string binDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+            if (!Directory.Exists(binDirectory))
+            {
+                Directory.CreateDirectory(binDirectory);
+            }
+            bool launchSynExists = File.Exists(Path.Combine(binDirectory, "launch.syn"));
+
+            if (!launchSynExists)
+            {
+                ClearBinFolder(binDirectory);
+                MessageBox.Show("Could not find launch.syn", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UpdateLabelText($"Synapse Z - {currentVersion} (Injection Aborted)");
+                Abort();
+                return;
+            }
+
+            UpdateLabelText($"Synapse Z - {currentVersion} (Ready!)");
+            if (GlobalVariables.UnlockFPS)
+            {
+                ExecuteScript("setfflag('DFIntTaskSchedulerTargetFps', 999999)");
+            }
+            Process[] robloxProcesses = Process.GetProcessesByName("RobloxPlayerBeta");
+            if (robloxProcesses.Length == 0)
+            {
+                Abort();
+                return;
+            }
+
+            // Check if PID file exists
+            string pidFilePath = Path.Combine(binDirectory, "pid.txt");
+           
+
+            // Save current PID to file
+            File.WriteAllText(pidFilePath, robloxProcesses[0].Id.ToString());
+
+            await Task.Delay(1000);
+            UpdateLabelText($"Synapse Z - {currentVersion}");
+=======
             UpdateLabelText("Synapse Z - v1.0.1 (Ready!)");
             await Task.Delay(1000);
             UpdateLabelText("Synapse Z - v1.0.1");
+>>>>>>> 927d70722fe7ce7cf033d7c88cfccdedeeaa4a10
 
             // Stop the background worker
             if (backgroundWorker.IsBusy)
@@ -1503,8 +1759,7 @@ namespace Synapse_Z
                     {
 
                         result = result.Trim('"');
-                        string unescapedString = Regex.Unescape(result);
-
+                        
                     }
                     else
                     {
@@ -1530,7 +1785,9 @@ namespace Synapse_Z
                         if (saveFileDialog.ShowDialog() == DialogResult.OK)
                         {
                             // Write the Lua script to the specified file
-                            File.WriteAllText(saveFileDialog.FileName, result);
+                            string unescapedString = Regex.Unescape(result);
+
+                            File.WriteAllText(saveFileDialog.FileName, unescapedString);
                             MessageBox.Show("File saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
