@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -663,7 +665,7 @@ namespace Synapse_Z
         private void InjTimer_Tick(object sender, EventArgs e)
         {
             if (process == null) return;
-            UpdateLabelText($"Synapse Z - v1.0.0 (Injecting...)");
+            UpdateLabelText($"Synapse Z - v1.0.1 (Injecting...)");
             process.Refresh();
             IntPtr mainWindowHandle = process.MainWindowHandle;
             if (mainWindowHandle != IntPtr.Zero)
@@ -679,7 +681,7 @@ namespace Synapse_Z
         private void WaitForProcessToHide(object sender, EventArgs e)
         {
 
-            UpdateLabelText($"Synapse Z - v1.0.0 (Scanning...)");
+            UpdateLabelText($"Synapse Z - v1.0.1 (Scanning...)");
             process.Refresh();
             IntPtr mainWindowHandle = process.MainWindowHandle;
             if (mainWindowHandle == IntPtr.Zero)
@@ -953,7 +955,6 @@ namespace Synapse_Z
 
         public string[] GetOtherExecutablePaths()
         {
-
             string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string currentExeName = Path.GetFileName(Application.ExecutablePath);
             string[] allExePaths = Directory.GetFiles(currentDirectory, "*.exe", SearchOption.TopDirectoryOnly);
@@ -961,9 +962,60 @@ namespace Synapse_Z
             // Exclude the current executable
             string[] otherExePaths = allExePaths.Where(path => !path.EndsWith(currentExeName, StringComparison.OrdinalIgnoreCase)).ToArray();
 
-            if (otherExePaths.Length > 0)
+            // Method to verify the existence of ".grh0", ".grh1" & ".grh2" in the file contents
+            bool ContainsRequiredPatterns(string filePath)
             {
-                return otherExePaths.Where(File.Exists).ToArray(); // Ensure the files exist
+                byte[] pattern0 = Encoding.ASCII.GetBytes(".grh0");
+                byte[] pattern1 = Encoding.ASCII.GetBytes(".grh1");
+                byte[] pattern2 = Encoding.ASCII.GetBytes(".grh2");
+
+                bool foundPattern0 = false;
+                bool foundPattern1 = false;
+                bool foundPattern2 = false;
+
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    byte[] buffer = new byte[4096]; // Read in chunks
+                    int bytesRead;
+
+                    while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        if (!foundPattern0 && buffer.ContainsSequence(pattern0))
+                        {
+                            foundPattern0 = true;
+                        }
+                        if (!foundPattern1 && buffer.ContainsSequence(pattern1))
+                        {
+                            foundPattern1 = true;
+                        }
+                        if (!foundPattern2 && buffer.ContainsSequence(pattern2))
+                        {
+                            foundPattern2 = true;
+                        }
+
+                        if (foundPattern0 && foundPattern1 && foundPattern2)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            // Check each executable for the required patterns
+            List<string> verifiedExePaths = new List<string>();
+            foreach (var exePath in otherExePaths)
+            {
+                if (ContainsRequiredPatterns(exePath))
+                {
+                    verifiedExePaths.Add(exePath);
+                }
+            }
+
+            if (verifiedExePaths.Count > 0)
+            {
+                return verifiedExePaths.ToArray();
             }
             else
             {
@@ -1144,10 +1196,10 @@ namespace Synapse_Z
                 int savedPid = int.Parse(File.ReadAllText(pidFilePath));
                 if (robloxProcesses[0].Id == savedPid)
                 {
-                    UpdateLabelText("Synapse Z - v1.0.0 (Checking Whitelist...)");
+                    UpdateLabelText("Synapse Z - v1.0.1 (Checking Whitelist...)");
                     await Task.Delay(100);
                     GlobalVariables.injecting = true;
-                    UpdateLabelText("Synapse Z - v1.0.0 (Re-Injecting...)");
+                    UpdateLabelText("Synapse Z - v1.0.1 (Re-Injecting...)");
                     await Task.Delay(500);
                     Done();
                     return;
@@ -1189,7 +1241,7 @@ namespace Synapse_Z
                     {
                         robloxProcesses[0].EnableRaisingEvents = true;
                         robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
-                        UpdateLabelText("Synapse Z - v1.0.0 (Checking Whitelist...)");
+                        UpdateLabelText("Synapse Z - v1.0.1 (Checking Whitelist...)");
                         string key = promptForm.Key;
                         if (string.IsNullOrEmpty(key))
                         {
@@ -1240,10 +1292,10 @@ namespace Synapse_Z
 
                 if (autoInject)
                 {
-                    UpdateLabelText("Synapse Z - v1.0.0 (Waiting for roblox...)");
+                    UpdateLabelText("Synapse Z - v1.0.1 (Waiting for roblox...)");
                     await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
                 }
-                UpdateLabelText("Synapse Z - v1.0.0 (Checking Whitelist...)");
+                UpdateLabelText("Synapse Z - v1.0.1 (Checking Whitelist...)");
 
                 var startInfo = new ProcessStartInfo
                 {
@@ -1292,13 +1344,13 @@ namespace Synapse_Z
             }
             if (GlobalVariables.injecting == true)
             {
-                UpdateLabelText("Synapse Z - v1.0.0 (Injection Aborted)");
+                UpdateLabelText("Synapse Z - v1.0.1 (Injection Aborted)");
             }
             GlobalVariables.injecting = false;
             GlobalVariables.isDone = false;
             
             await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
-            UpdateLabelText("Synapse Z - v1.0.0");
+            UpdateLabelText("Synapse Z - v1.0.1");
             //MessageBox.Show("Roblox process has exited. Injection aborted.", "Aborted", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1343,7 +1395,7 @@ namespace Synapse_Z
         {
             if (GlobalVariables.isDone) return;
             if (!GlobalVariables.injecting) return;
-            UpdateLabelText("Synapse Z - v1.0.0 (Scanning...)");
+            UpdateLabelText("Synapse Z - v1.0.1 (Scanning...)");
             GlobalVariables.isDone = true;
             GlobalVariables.injecting = false;
 
@@ -1355,9 +1407,9 @@ namespace Synapse_Z
                 process.Dispose();
             }
             await Task.Delay(500);
-            UpdateLabelText("Synapse Z - v1.0.0 (Ready!)");
+            UpdateLabelText("Synapse Z - v1.0.1 (Ready!)");
             await Task.Delay(1000);
-            UpdateLabelText("Synapse Z - v1.0.0");
+            UpdateLabelText("Synapse Z - v1.0.1");
 
             // Stop the background worker
             if (backgroundWorker.IsBusy)
@@ -1534,5 +1586,27 @@ namespace Synapse_Z
             }
         }
     }
-
+    public static class ByteExtensions
+    {
+        public static bool ContainsSequence(this byte[] buffer, byte[] sequence)
+        {
+            for (int i = 0; i < buffer.Length - sequence.Length + 1; i++)
+            {
+                bool found = true;
+                for (int j = 0; j < sequence.Length; j++)
+                {
+                    if (buffer[i + j] != sequence[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }
