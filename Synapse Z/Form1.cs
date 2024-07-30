@@ -54,7 +54,7 @@ namespace Synapse_Z
         private ContextMenuStrip tabContextMenu;
 
         private static readonly HttpClient client = new HttpClient();
-        private const string currentVersion = "v1.0.3"; // Replace with the current version of your application
+        private const string currentVersion = "v1.0.4"; // Replace with the current version of your application
 
         private static SynapseZ _instance;
 
@@ -204,6 +204,7 @@ namespace Synapse_Z
 
                 if (IsNewVersionAvailable(currentVersion, latestVersion))
                 {
+                    this.TopMost = false;
                    MessageBox.Show("A new update is available. The application will now update.", "Update Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     RunBootstrapper();
                     this.Close();
@@ -1329,7 +1330,7 @@ namespace Synapse_Z
 
             if (!authSynExists || !launchSynExists)
             {
-                if (GlobalVariables.CurrentKey != "")
+                if (GlobalVariables.CurrentKey != null & GlobalVariables.CurrentKey != "")
                 {
                     robloxProcesses[0].EnableRaisingEvents = true;
                     robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method

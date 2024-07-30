@@ -40,12 +40,12 @@
             this.TabClosingPrompt = new System.Windows.Forms.CheckBox();
             this.TopMostCheck = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.GetCurrentKey = new System.Windows.Forms.Button();
             this.EnterKey = new System.Windows.Forms.Button();
             this.Reset = new System.Windows.Forms.Button();
             this.KillRBLX = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.GetCurrentKey = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -77,7 +77,7 @@
             this.Minimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Minimize.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Minimize.ForeColor = System.Drawing.Color.White;
-            this.Minimize.Location = new System.Drawing.Point(291, 0);
+            this.Minimize.Location = new System.Drawing.Point(284, 0);
             this.Minimize.Name = "Minimize";
             this.Minimize.Size = new System.Drawing.Size(20, 23);
             this.Minimize.TabIndex = 4;
@@ -217,6 +217,24 @@
             this.panel1.Size = new System.Drawing.Size(306, 348);
             this.panel1.TabIndex = 4;
             // 
+            // GetCurrentKey
+            // 
+            this.GetCurrentKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.GetCurrentKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.GetCurrentKey.FlatAppearance.BorderSize = 0;
+            this.GetCurrentKey.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
+            this.GetCurrentKey.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(80)))));
+            this.GetCurrentKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GetCurrentKey.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.GetCurrentKey.ForeColor = System.Drawing.Color.White;
+            this.GetCurrentKey.Location = new System.Drawing.Point(158, 278);
+            this.GetCurrentKey.Name = "GetCurrentKey";
+            this.GetCurrentKey.Size = new System.Drawing.Size(97, 26);
+            this.GetCurrentKey.TabIndex = 10;
+            this.GetCurrentKey.Text = "Get Current Key";
+            this.GetCurrentKey.UseVisualStyleBackColor = false;
+            this.GetCurrentKey.Click += new System.EventHandler(this.GetCurrentKey_Click);
+            // 
             // EnterKey
             // 
             this.EnterKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -331,24 +349,6 @@
             this.comboBox1.Size = new System.Drawing.Size(273, 24);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // GetCurrentKey
-            // 
-            this.GetCurrentKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.GetCurrentKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
-            this.GetCurrentKey.FlatAppearance.BorderSize = 0;
-            this.GetCurrentKey.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
-            this.GetCurrentKey.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(80)))));
-            this.GetCurrentKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GetCurrentKey.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.GetCurrentKey.ForeColor = System.Drawing.Color.White;
-            this.GetCurrentKey.Location = new System.Drawing.Point(158, 278);
-            this.GetCurrentKey.Name = "GetCurrentKey";
-            this.GetCurrentKey.Size = new System.Drawing.Size(97, 26);
-            this.GetCurrentKey.TabIndex = 10;
-            this.GetCurrentKey.Text = "Get Current Key";
-            this.GetCurrentKey.UseVisualStyleBackColor = false;
-            this.GetCurrentKey.Click += new System.EventHandler(this.GetCurrentKey_Click);
             // 
             // Options
             // 

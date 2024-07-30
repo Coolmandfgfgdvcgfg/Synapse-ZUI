@@ -284,7 +284,7 @@ namespace Synapse_Z
 
         private void GetCurrentKey_Click(object sender, EventArgs e)
         {
-            if (GlobalVariables.CurrentKey != "")
+            if (GlobalVariables.CurrentKey != null & GlobalVariables.CurrentKey != "")
             {
                 Clipboard.SetText(GlobalVariables.CurrentKey);
                 MessageBox.Show("Copied your current key to your clipboard!", "Success!");
