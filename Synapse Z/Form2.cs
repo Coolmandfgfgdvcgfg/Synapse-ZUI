@@ -24,6 +24,7 @@ namespace Synapse_Z
             string ranString = GenerateRandomString(12);
             this.Text = ranString;
             this.ShowInTaskbar = true;
+            this.TopMost = true;
             SystemSounds.Asterisk.Play();
             this.Opacity = 0; // Set initial opacity to 0
 
@@ -103,10 +104,9 @@ namespace Synapse_Z
         private void SendKey_Click(object sender, EventArgs e)
         {
             Key = KeyBox.Text;
+            GlobalVariables.CurrentKey = Key;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-     
-        
     }
 }

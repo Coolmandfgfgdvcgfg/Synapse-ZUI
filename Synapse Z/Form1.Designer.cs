@@ -139,7 +139,7 @@
             this.synlabel.Name = "synlabel";
             this.synlabel.Size = new System.Drawing.Size(742, 31);
             this.synlabel.TabIndex = 1;
-            this.synlabel.Text = "Synapse Z - v1.0.0";
+            this.synlabel.Text = "Synapse Z - vX.X.X";
             this.synlabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.synlabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             this.synlabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);

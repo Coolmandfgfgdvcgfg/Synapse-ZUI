@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.WinForms;
 using static System.Windows.Forms.DataFormats;
+using Application = System.Windows.Forms.Application;
+using Clipboard = System.Windows.Forms.Clipboard;
+using MessageBox = System.Windows.Forms.MessageBox;
+using Point = System.Drawing.Point;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Synapse_Z
 {
@@ -17,7 +26,7 @@ namespace Synapse_Z
         private bool topBarMouseDown;
         private Point offset;
         private Timer fadeInTimer;
-  
+
 
         public Options()
         {
@@ -196,7 +205,7 @@ namespace Synapse_Z
                     }
                 }
             }
-            
+
         }
 
         private void Minimize_Click(object sender, EventArgs e)
@@ -204,11 +213,85 @@ namespace Synapse_Z
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void KillRBLX_Click(object sender, EventArgs e)
         {
+            // Get all processes with the name RobloxPlayerBeta
+            Process[] processes = Process.GetProcessesByName("RobloxPlayerBeta");
 
+            // Loop through each process and kill it
+            foreach (Process process in processes)
+            {
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit(); // Optional, waits for the process to exit
+                    MessageBox.Show($"Process {process.ProcessName} (ID: {process.Id}) has been killed.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to kill process {process.ProcessName} (ID: {process.Id}): {ex.Message}");
+                }
+            }
         }
 
+        private void Reset_Click(object sender, EventArgs e)
+        {
+            // Show confirmation box
+            DialogResult result = MessageBox.Show("Are you sure you want to reset the settings? This will delete the settings.txt file and restart the program.", "Confirm Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
+            // If the user clicked Yes
+            if (result == DialogResult.Yes)
+            {
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "settings.txt");
+
+                // Check if the file exists
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        GlobalVariables.noSave = true;
+                        // Delete the file
+                        File.Delete(filePath);
+
+                        // Restart the application
+                        Application.Restart();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Show error message if something goes wrong
+                        MessageBox.Show($"Failed to delete settings.txt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    GlobalVariables.noSave = true;
+                    // Restart the application
+                    Application.Restart();
+                }
+            }
+        }
+
+        private void EnterKey_Click(object sender, EventArgs e)
+        {
+            using (var promptForm = new AccountKeyPrompt())
+            {
+                if (promptForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    MessageBox.Show("Successfully Set your current Key!", "Success!");
+                }
+            }
+        }
+
+        private void GetCurrentKey_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.CurrentKey != "")
+            {
+                Clipboard.SetText(GlobalVariables.CurrentKey);
+                MessageBox.Show("Copied your current key to your clipboard!", "Success!");
+            } else
+            {
+                MessageBox.Show("No current key!", "Error!");
+            }
+        }
     }
 }

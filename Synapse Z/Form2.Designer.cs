@@ -161,13 +161,13 @@
             // 
             this.KeyBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
             this.KeyBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.KeyBox.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.KeyBox.Font = new System.Drawing.Font("Segoe UI Semibold", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.KeyBox.ForeColor = System.Drawing.Color.White;
-            this.KeyBox.Location = new System.Drawing.Point(12, 42);
+            this.KeyBox.Location = new System.Drawing.Point(12, 45);
             this.KeyBox.Name = "KeyBox";
             this.KeyBox.PasswordChar = '*';
             this.KeyBox.PlaceholderText = "Enter your account key here.";
-            this.KeyBox.Size = new System.Drawing.Size(506, 26);
+            this.KeyBox.Size = new System.Drawing.Size(506, 22);
             this.KeyBox.TabIndex = 3;
             this.KeyBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 

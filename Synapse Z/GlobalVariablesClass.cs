@@ -10,6 +10,7 @@ namespace Synapse_Z
         private static bool topMostGlobal = true;
         private static Action<bool> onTopMostGlobalChanged;
 
+        public static bool noSave { get; set; } = false;
         public static bool injecting { get; set; } = false;
         public static bool isDone { get; set; } = false;
         private static bool autoInject;
@@ -17,6 +18,7 @@ namespace Synapse_Z
         public static bool ClearEditorPrompt { get; set; } = true;
         public static bool UnlockFPS { get; set; } = false;
         public static string CurrentEditorTheme { get; set; } = "tomorrow_night_eighties";
+        public static string CurrentKey { get; set; } = "";
 
         public static bool AutoInject
         {
@@ -78,7 +80,8 @@ namespace Synapse_Z
                 ClearEditorPrompt = ClearEditorPrompt,
                 TopMostGlobal = TopMostGlobal,
                 UnlockFPS = UnlockFPS,
-                CurrentEditorTheme = CurrentEditorTheme
+                CurrentEditorTheme = CurrentEditorTheme,
+                CurrentKey = CurrentKey
             };
 
             using (var stream = new FileStream(SettingsFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: true))
@@ -90,6 +93,7 @@ namespace Synapse_Z
                 await writer.WriteLineAsync(settings.TopMostGlobal.ToString());
                 await writer.WriteLineAsync(settings.UnlockFPS.ToString());
                 await writer.WriteLineAsync(settings.CurrentEditorTheme);
+                await writer.WriteLineAsync(settings.CurrentKey);
             }
         }
 
@@ -106,6 +110,7 @@ namespace Synapse_Z
                     bool.TryParse(await reader.ReadLineAsync(), out bool topMostGlobalValue);
                     bool.TryParse(await reader.ReadLineAsync(), out bool unlockFPSValue);
                     string currentEditorThemeValue = await reader.ReadLineAsync();
+                    string CurrentKeyValue = await reader.ReadLineAsync();
 
                     AutoInject = autoInjectValue;
                     TabClosingPrompt = tabClosingPromptValue;
@@ -113,6 +118,7 @@ namespace Synapse_Z
                     TopMostGlobal = topMostGlobalValue;
                     UnlockFPS = unlockFPSValue;
                     CurrentEditorTheme = currentEditorThemeValue;
+                    CurrentKey = CurrentKeyValue;
                 }
             }
         }
@@ -127,6 +133,7 @@ namespace Synapse_Z
             public bool TopMostGlobal { get; set; }
             public bool UnlockFPS { get; set; }
             public string CurrentEditorTheme { get; set; }
+            public string CurrentKey { get; set; }
         }
     }
 }
