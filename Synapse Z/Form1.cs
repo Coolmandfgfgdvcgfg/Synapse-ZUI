@@ -852,6 +852,7 @@ namespace Synapse_Z
             await webView.EnsureCoreWebView2Async(environment);
 
             // Load the HTML content from the embedded resource
+           // ListEmbeddedResources();
             string htmlContent = GetEmbeddedHtmlContent("Synapse_Z.Resources.editor.html");
             webView.NavigateToString(htmlContent);
 
@@ -886,10 +887,39 @@ namespace Synapse_Z
 
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    return reader.ReadToEnd();
+                    string html = reader.ReadToEnd();
+                    html = EmbedJavaScriptContent(html);
+                    return html;
                 }
             }
         }
+
+        private string EmbedJavaScriptContent(string html)
+        {
+            html = html.Replace("src=\"ace.js\"", $"src=\"data:text/javascript;base64,{GetEmbeddedResourceBase64("Synapse_Z.Resources.ace.js")}\"");
+            html = html.Replace("src=\"ext-language_tools.js\"", $"src=\"data:text/javascript;base64,{GetEmbeddedResourceBase64("Synapse_Z.Resources.ext-language_tools.js")}\"");
+            html = html.Replace("src=\"mode-lua.js\"", $"src=\"data:text/javascript;base64,{GetEmbeddedResourceBase64("Synapse_Z.Resources.mode-lua.js")}\"");
+            return html;
+        }
+
+        private string GetEmbeddedResourceBase64(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream == null)
+                {
+                    throw new InvalidOperationException("Resource not found: " + resourceName);
+                }
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    return Convert.ToBase64String(ms.ToArray());
+                }
+            }
+        }
+
 
         private void AddNewTabButton()
         {

@@ -2,78 +2,79 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Editor</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  <style type="text/css" media="screen">
-    body {
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style type="text/css" media="screen">
+        body {
+            overflow: hidden;
+        }
 
-    #editor {
-      margin: 0;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
+        #editor {
+            margin: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
 
-    /* Custom Scrollbar Styles */
-    ::-webkit-scrollbar {
-      width: 12px;
-      height: 12px;
-    }
+        /* Custom Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
 
-    ::-webkit-scrollbar-thumb {
-      background-color: #272727;
-      /* Black color */
-      border-radius: 10px;
-      border: 3px solid #000;
-      /* Adjust the thumb color and border */
-    }
+        ::-webkit-scrollbar-thumb {
+            background-color: #272727;
+            /* Black color */
+            border-radius: 10px;
+            border: 3px solid #000;
+            /* Adjust the thumb color and border */
+        }
 
-    ::-webkit-scrollbar-track {
-      background: #333;
-      /* Dark background for the track */
-      border-radius: 10px;
-    }
+        ::-webkit-scrollbar-track {
+            background: #333;
+            /* Dark background for the track */
+            border-radius: 10px;
+        }
 
-    /* Firefox */
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #272727 #333;
-    }
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #272727 #333;
+        }
 
-    /* IE and Edge */
-    .scrollbar {
-      -ms-overflow-style: -ms-autohiding-scrollbar;
-    }
+        /* IE and Edge */
+        .scrollbar {
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
 
-    .scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
-    charset="utf-8"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-lua.js"></script>
+            .scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+    </style>
+    <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="ext-language_tools.js"></script>
+    <script src="mode-lua.js"></script>
 </head>
 
 <body style="background-color: #2d2d2d">
   <pre id="editor"></pre>
   <script>
     ace.require("ace/ext/language_tools");
-    var editor = ace.edit("editor");
+      var editor = ace.edit("editor");
+      ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/')
     editor.setTheme("ace/theme/tomorrow_night_eighties");
     editor.session.setMode("ace/mode/lua");
     editor.setOption("enableLiveAutocompletion", true);
     editor.setOption("cursorStyle", "smooth");
     editor.setShowPrintMargin(false);
-    editor.setOptions({
+      editor.setOptions({
+       useWorker: false,
       fontFamily: "JetBrains Mono",
       fontSize: "10pt",
       customScrollbar: true
