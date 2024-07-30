@@ -1,5 +1,7 @@
+<<<<<<< HEAD
 ﻿using System;
-using System.Collections.Generic;
+=======
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -762,7 +764,7 @@ namespace Synapse_Z
         private void InjTimer_Tick(object sender, EventArgs e)
         {
             if (process == null) return;
-            UpdateLabelText($"Synapse Z - {currentVersion} (Injecting...)");
+            UpdateLabelText($"Synapse Z - v1.0.0 (Injecting...)");
             process.Refresh();
             IntPtr mainWindowHandle = process.MainWindowHandle;
             if (mainWindowHandle != IntPtr.Zero)
@@ -778,7 +780,7 @@ namespace Synapse_Z
         private void WaitForProcessToHide(object sender, EventArgs e)
         {
 
-            UpdateLabelText($"Synapse Z - {currentVersion} (Scanning...)");
+            UpdateLabelText($"Synapse Z - v1.0.0 (Scanning...)");
             process.Refresh();
             IntPtr mainWindowHandle = process.MainWindowHandle;
             if (mainWindowHandle == IntPtr.Zero)
@@ -1286,7 +1288,25 @@ namespace Synapse_Z
                 }
             }
 
-          
+            // Check if PID file exists
+            string pidFilePath = Path.Combine(binDirectory, "pid.txt");
+            if (File.Exists(pidFilePath))
+            {
+                int savedPid = int.Parse(File.ReadAllText(pidFilePath));
+                if (robloxProcesses[0].Id == savedPid)
+                {
+                    UpdateLabelText("Synapse Z - v1.0.0 (Checking Whitelist...)");
+                    await Task.Delay(100);
+                    GlobalVariables.injecting = true;
+                    UpdateLabelText("Synapse Z - v1.0.0 (Re-Injecting...)");
+                    await Task.Delay(500);
+                    Done();
+                    return;
+                }
+            }
+
+            // Save current PID to file
+            File.WriteAllText(pidFilePath, robloxProcesses[0].Id.ToString());
 
             // Check for auth.syn and launch.syn files
             bool authSynExists = File.Exists(Path.Combine(binDirectory, "auth.syn"));
@@ -1330,63 +1350,21 @@ namespace Synapse_Z
 
             if (!authSynExists || !launchSynExists)
             {
-                if (GlobalVariables.CurrentKey != null & GlobalVariables.CurrentKey != "")
+                // Prompt the user to enter the key
+                using (var promptForm = new AccountKeyPrompt())
                 {
-                    robloxProcesses[0].EnableRaisingEvents = true;
-                    robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
-                    UpdateLabelText($"Synapse Z - {currentVersion} (Checking Whitelist...)");
-                    string key = GlobalVariables.CurrentKey;
-                    if (string.IsNullOrEmpty(key))
+                    if (promptForm.ShowDialog(this) == DialogResult.OK)
                     {
-                        MessageBox.Show("No key entered. Aborting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    GlobalVariables.injecting = true;
-
-                    // Start the process and send the key
-                    var startInfo = new ProcessStartInfo
-                    {
-                        FileName = path,
-                        WorkingDirectory = Path.GetDirectoryName(path),
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        RedirectStandardInput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true // Ensure the window is hidden
-                    };
-
-                    process = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
-                    process.Exited += (s, e) => Done();
-
-                    process.Start();
-                    ShowWindow(process.MainWindowHandle, SW_HIDE); // Hide the process window
-                    using (StreamWriter writer = process.StandardInput)
-                    {
-                        writer.WriteLine(key);
-                    }
-
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-
-                    injTimer.Start();
-                }
-                else
-                {
-                    // Prompt the user to enter the key
-                    using (var promptForm = new AccountKeyPrompt())
-                    {
-                        if (promptForm.ShowDialog(this) == DialogResult.OK)
+                        robloxProcesses[0].EnableRaisingEvents = true;
+                        robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
+                        UpdateLabelText("Synapse Z - v1.0.0 (Checking Whitelist...)");
+                        string key = promptForm.Key;
+                        if (string.IsNullOrEmpty(key))
                         {
-                            robloxProcesses[0].EnableRaisingEvents = true;
-                            robloxProcesses[0].Exited += (s, e) => Abort(); // Update this line to call Abort method
-                            UpdateLabelText($"Synapse Z - {currentVersion} (Checking Whitelist...)");
-                            string key = promptForm.Key;
-                            if (string.IsNullOrEmpty(key))
-                            {
-                                MessageBox.Show("No key entered. Aborting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-                            GlobalVariables.injecting = true;
+                            MessageBox.Show("No key entered. Aborting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        GlobalVariables.injecting = true;
 
                             // Start the process and send the key
                             var startInfo = new ProcessStartInfo
@@ -1431,10 +1409,10 @@ namespace Synapse_Z
 
                 if (autoInject)
                 {
-                    UpdateLabelText($"Synapse Z - {currentVersion} (Waiting for roblox...)");
+                    UpdateLabelText("Synapse Z - v1.0.0 (Waiting for roblox...)");
                     await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
                 }
-                UpdateLabelText($"Synapse Z - {currentVersion} (Checking Whitelist...)");
+                UpdateLabelText("Synapse Z - v1.0.0 (Checking Whitelist...)");
 
                 var startInfo = new ProcessStartInfo
                 {
@@ -1498,10 +1476,15 @@ namespace Synapse_Z
                 process.Kill();
                 process = null;
             }
-            
+            if (GlobalVariables.injecting == true)
+            {
+                UpdateLabelText("Synapse Z - v1.0.0 (Injection Aborted)");
+            }
+            GlobalVariables.injecting = false;
+            GlobalVariables.isDone = false;
             
             await Task.Delay(1000); // Example delay, replace with your settings.injectionDelay
-            UpdateLabelText($"Synapse Z - {currentVersion}");
+            UpdateLabelText("Synapse Z - v1.0.0");
             //MessageBox.Show("Roblox process has exited. Injection aborted.", "Aborted", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1546,7 +1529,7 @@ namespace Synapse_Z
         {
             if (GlobalVariables.isDone) return;
             if (!GlobalVariables.injecting) return;
-            UpdateLabelText($"Synapse Z - {currentVersion} (Scanning...)");
+            UpdateLabelText("Synapse Z - v1.0.0 (Scanning...)");
             GlobalVariables.isDone = true;
             GlobalVariables.injecting = false;
 
@@ -1558,43 +1541,9 @@ namespace Synapse_Z
                 process.Dispose();
             }
             await Task.Delay(500);
-            string binDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
-            if (!Directory.Exists(binDirectory))
-            {
-                Directory.CreateDirectory(binDirectory);
-            }
-            bool launchSynExists = File.Exists(Path.Combine(binDirectory, "launch.syn"));
-
-            if (!launchSynExists)
-            {
-                ClearBinFolder(binDirectory);
-                MessageBox.Show("Could not find launch.syn", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                UpdateLabelText($"Synapse Z - {currentVersion} (Injection Aborted)");
-                Abort();
-                return;
-            }
-
-            UpdateLabelText($"Synapse Z - {currentVersion} (Ready!)");
-            if (GlobalVariables.UnlockFPS)
-            {
-                ExecuteScript("setfflag('DFIntTaskSchedulerTargetFps', 999999)");
-            }
-            Process[] robloxProcesses = Process.GetProcessesByName("RobloxPlayerBeta");
-            if (robloxProcesses.Length == 0)
-            {
-                Abort();
-                return;
-            }
-
-            // Check if PID file exists
-            string pidFilePath = Path.Combine(binDirectory, "pid.txt");
-           
-
-            // Save current PID to file
-            File.WriteAllText(pidFilePath, robloxProcesses[0].Id.ToString());
-
+            UpdateLabelText("Synapse Z - v1.0.0 (Ready!)");
             await Task.Delay(1000);
-            UpdateLabelText($"Synapse Z - {currentVersion}");
+            UpdateLabelText("Synapse Z - v1.0.0");
 
             // Stop the background worker
             if (backgroundWorker.IsBusy)
