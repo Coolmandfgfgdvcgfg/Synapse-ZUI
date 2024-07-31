@@ -54,7 +54,7 @@ namespace Synapse_Z
         private ContextMenuStrip tabContextMenu;
 
         private static readonly HttpClient client = new HttpClient();
-        private const string currentVersion = "v1.0.4"; // Replace with the current version of your application
+        private const string currentVersion = "v1.0.5"; // Replace with the current version of your application
 
         private static SynapseZ _instance;
 
@@ -560,12 +560,27 @@ namespace Synapse_Z
             executeMenuItem.Click += ExecuteMenuItem_Click;
             scriptContextMenu.Items.Add(executeMenuItem);
 
-            ToolStripMenuItem loadEditorMenuItem = new ToolStripMenuItem("Load Editor");
+            ToolStripMenuItem loadEditorMenuItem = new ToolStripMenuItem("Load Into Editor");
             loadEditorMenuItem.Click += LoadEditorMenuItem_Click;
             scriptContextMenu.Items.Add(loadEditorMenuItem);
 
             Scriptbox.ContextMenuStrip = scriptContextMenu;
             Scriptbox.MouseDown += Scriptbox_MouseDown;
+            Scriptbox.MouseDoubleClick += Scriptbox_MouseDoubleClick; // Add this line
+        }
+
+        private async void Scriptbox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = Scriptbox.IndexFromPoint(e.Location);
+            if (index != ListBox.NoMatches)
+            {
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts", Scriptbox.Items[index].ToString());
+                string fileContent = File.ReadAllText(filePath);
+
+                // Load script into a new tab
+                string tabName = Path.GetFileNameWithoutExtension(filePath);
+                AddNewTab(tabName, fileContent);
+            }
         }
 
         private void Scriptbox_MouseDown(object sender, MouseEventArgs e)
@@ -1656,7 +1671,7 @@ namespace Synapse_Z
             // Create an OpenFileDialog to allow the user to select a .txt or .lua file
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "Text Files (*.txt)|*.txt|Lua Files (*.lua)|*.lua|All Files (*.*)|*.*",
+                Filter = "Text Files (*.txt)|*.txt|Lua Files (*.lua)|*.lua|Luau Files (*.luau)|*.luau|All Files (*.*)|*.*",
                 Title = "Open Script File"
             };
 
@@ -1724,7 +1739,7 @@ namespace Synapse_Z
                     {
                         // Set the initial directory and default file name
                         saveFileDialog.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts");
-                        saveFileDialog.Filter = "Lua files (*.lua)|*.lua";
+                        saveFileDialog.Filter = "Lua Files (*.lua)|*.lua|Text Files (*.txt)|*.txt|Luau Files (*.luau)|*.luau|All Files (*.*)|*.*";
                         saveFileDialog.DefaultExt = "lua";
                         saveFileDialog.AddExtension = true;
 
