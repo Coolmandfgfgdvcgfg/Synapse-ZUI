@@ -22,6 +22,7 @@ using Color = System.Drawing.Color;
 using Formatting = Newtonsoft.Json.Formatting;
 using Pen = System.Drawing.Pen;
 
+
 namespace Synapse_Z
 {
     public partial class SynapseZ : Form
@@ -56,7 +57,7 @@ namespace Synapse_Z
 
 
         private static readonly HttpClient client = new HttpClient();
-        private const string currentVersion = "v1.0.7"; // Replace with the current version of your application
+        private const string currentVersion = "v1.0.8"; // Replace with the current version of your application
 
         private static SynapseZ _instance;
 
@@ -716,8 +717,7 @@ namespace Synapse_Z
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        private const int SW_HIDE = 0;
-        private const int SW_SHOW = 5;
+        const int SW_HIDE = 0;
 
         private void InitializeBackgroundWorker()
         {
@@ -731,19 +731,21 @@ namespace Synapse_Z
             while (true)
             {
                 HideCommandPromptWindows();
-                Thread.Sleep(1); // Check every 500 milliseconds
+                Thread.Sleep(0); 
             }
         }
-
-        private void HideCommandPromptWindows()
+        const uint SWP_NOACTIVATE = 0x0010;
+        static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        private static void HideCommandPromptWindows()
         {
             // Find command prompt windows
             Process[] processes = Process.GetProcessesByName("WindowsTerminal");
             foreach (var process in processes)
             {
-                ShowWindow(process.MainWindowHandle, SW_HIDE);
-            }
+                // Move the window to the bottom of the Z order
 
+                SetWindowPos(process.MainWindowHandle, HWND_BOTTOM, -2000, -2000, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+            }
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -768,11 +770,12 @@ namespace Synapse_Z
             // Add the initial "Add Tab" button
             AddNewTabButton();
 
+            await Task.Run(ReInjectMissingPIDs);
+
+            await Task.Delay(1); // why does topmost not work unless i do this wtf
             this.BringToFront();
             this.TopMost = GlobalVariables.TopMostGlobal;
             this.ShowInTaskbar = true;
-
-            await Task.Run(ReInjectMissingPIDs);
         }
 
 
@@ -825,13 +828,11 @@ namespace Synapse_Z
             IntPtr mainWindowHandle = process.MainWindowHandle;
             if (mainWindowHandle != IntPtr.Zero)
             {
-
                 // Process window is shown, now wait until it hides
                 injTimer.Interval = 1000; // Change interval for next phase
                 injTimer.Tick -= InjTimer_Tick;
             }
         }
-
 
         private void MaximizeButton_Click(object sender, EventArgs e)
         {
@@ -1375,8 +1376,6 @@ namespace Synapse_Z
                 Inject(launcherPath, false, processesToInject.Select(p => p.Id).ToArray());
             }
         }
-
-
         public async void Inject(string path, bool autoInject, int[] processIds)
         {
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
@@ -1397,21 +1396,6 @@ namespace Synapse_Z
             if (!Directory.Exists(workspaceDirectory))
             {
                 Directory.CreateDirectory(workspaceDirectory);
-            }
-
-            string targetFilePath = Path.Combine(workspaceDirectory, "0.635.0.6350588");
-
-            // Check if the file exists and delete it
-            if (File.Exists(targetFilePath))
-            {
-                try
-                {
-                    File.Delete(targetFilePath);
-                }
-                catch (Exception ex)
-                {
-                    return;
-                }
             }
 
             // Load existing PIDs from the PID file
@@ -1453,7 +1437,7 @@ namespace Synapse_Z
             if (authSynExists && !launchSynExists)
             {
                 ClearBinFolder(binDirectory);
-                MessageBox.Show("Could not find launch.syn", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find launch.syn, did you forget to enter your HWID on the bot?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -1464,6 +1448,7 @@ namespace Synapse_Z
                 return;
             }
 
+            // Start the background worker
             if (!backgroundWorker.IsBusy)
             {
                 backgroundWorker.RunWorkerAsync();
@@ -1561,8 +1546,23 @@ namespace Synapse_Z
                 if (autoInject)
                 {
                     UpdateLabelText($"{FinishedExpTop} (Waiting for roblox...)");
-                    await Task.Delay(1000);
                 }
+
+                foreach (int processId in processIds)
+                {
+                    bool robloxWindowShown = false;
+                    Process robloxProcess = Process.GetProcessById(processId); // Assuming you are injecting into one process at a time
+                    while (!robloxWindowShown)
+                    {
+                        robloxProcess.Refresh();
+                        if (robloxProcess.MainWindowHandle != IntPtr.Zero)
+                        {
+                            robloxWindowShown = true;
+                        }
+                        await Task.Delay(100); // Polling interval
+                    }
+                }
+
                 UpdateLabelText($"{FinishedExpTop} (Checking Whitelist...)");
 
                 var startInfo = new ProcessStartInfo
@@ -1589,7 +1589,6 @@ namespace Synapse_Z
                     process.BeginErrorReadLine();
 
                     injTimer.Start();
-
                 }
                 catch (Exception ex)
                 {
@@ -1678,6 +1677,7 @@ namespace Synapse_Z
                 }
             }
         }
+
         private async void Done(int[] processIds)
         {
             if (GlobalVariables.isDone) return;
@@ -1703,11 +1703,17 @@ namespace Synapse_Z
                 Directory.CreateDirectory(binDirectory);
             }
 
+            // Stop the background worker
+            if (backgroundWorker.IsBusy)
+            {
+                backgroundWorker.CancelAsync();
+            }
+
             bool launchSynExists = File.Exists(Path.Combine(binDirectory, "launch.syn"));
             if (!launchSynExists)
             {
                 ClearBinFolder(binDirectory);
-                MessageBox.Show("Could not find launch.syn", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find launch.syn, did you forget to enter your HWID on the bot?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 UpdateLabelText($"{FinishedExpTop} (Injection Aborted)");
                 foreach (int processId in processIds)
                 {
@@ -1767,8 +1773,9 @@ namespace Synapse_Z
             await Task.Delay(1000);
 
             UpdateLabelText(FinishedExpTop);
-        }
 
+         
+        }
 
 
         private void UpdateLabelText(string text)
@@ -1788,6 +1795,7 @@ namespace Synapse_Z
             SetWindowPos(handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
         }
 
+  
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
