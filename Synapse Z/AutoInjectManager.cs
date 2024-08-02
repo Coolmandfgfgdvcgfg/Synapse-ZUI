@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 
 namespace Synapse_Z
@@ -30,21 +32,35 @@ namespace Synapse_Z
             {
                 while (!token.IsCancellationRequested)
                 {
-                    if (GlobalVariables.AutoInject && !GlobalVariables.injecting && !GlobalVariables.isDone)
+                    if (GlobalVariables.AutoInject)
                     {
-                        if (IsRobloxPlayerBetaRunning())
+                        var robloxProcesses = Process.GetProcessesByName("RobloxPlayerBeta");
+                        if (robloxProcesses.Length > 0)
                         {
                             var paths = form1Instance.GetOtherExecutablePaths();
                             if (paths != null && paths.Length > 0)
                             {
-                                foreach (var path in paths)
+                                // Load existing PIDs from the PID file
+                                string binDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+                                string pidFilePath = Path.Combine(binDirectory, "pid.txt");
+                                var existingPids = System.IO.File.Exists(pidFilePath)
+                                    ? System.IO.File.ReadAllLines(pidFilePath).Select(int.Parse).ToList()
+                                    : new System.Collections.Generic.List<int>();
+
+                                var newProcessIds = robloxProcesses
+                                    .Where(p => !existingPids.Contains(p.Id) && !GlobalVariables.ExecutionPIDS.ContainsKey(p.Id.ToString()))
+                                    .Select(p => p.Id)
+                                    .ToArray();
+
+                                if (newProcessIds.Length > 0)
                                 {
-                                    form1Instance.Inject(path, true);
+                                    string launcherPath = paths.First();
+                                    form1Instance.Inject(launcherPath, true, newProcessIds);
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("no paths found");
+                                MessageBox.Show("No paths found");
                             }
                         }
                     }
@@ -56,11 +72,6 @@ namespace Synapse_Z
         public static void StopAutoInjectTask()
         {
             autoInjectCancellationTokenSource?.Cancel();
-        }
-
-        private static bool IsRobloxPlayerBetaRunning()
-        {
-            return Process.GetProcessesByName("RobloxPlayerBeta").Length > 0;
         }
     }
 }

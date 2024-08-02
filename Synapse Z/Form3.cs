@@ -24,6 +24,8 @@ namespace Synapse_Z
         public ScriptHub()
         {
             InitializeComponent();
+            ThemeManager.Instance.ApplyTheme(this);
+            synlabel.Text = $"{GlobalVariables.ExploitName} - Script Hub";
             string ranString = GenerateRandomString(12);
             this.Text = ranString;
             this.ShowInTaskbar = true;
@@ -56,18 +58,18 @@ namespace Synapse_Z
             // Draw background
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(54, 72, 88)), e.Bounds);
+                e.Graphics.FillRectangle(new SolidBrush(Execute.FlatAppearance.MouseDownBackColor), e.Bounds);
             }
             else
             {
-                e.Graphics.FillRectangle(new SolidBrush(ScriptHubBox.BackColor), e.Bounds);
+                e.Graphics.FillRectangle(new SolidBrush(ThemeManager.Instance.GetThemeColor("ScriptHub.ListBox.BackColor")), e.Bounds);
             }
 
             // Set font to 8pt
             Font font = new Font(e.Font.FontFamily, 9, e.Font.Style);
 
             // Draw text
-            e.Graphics.DrawString(ScriptHubBox.Items[e.Index].ToString(), font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
+            e.Graphics.DrawString(ScriptHubBox.Items[e.Index].ToString(), font, new SolidBrush(ThemeManager.Instance.GetThemeColor("ScriptHub.ListBox.ForeColor")), e.Bounds, StringFormat.GenericDefault);
 
             // Draw grey outline if selected
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
@@ -187,6 +189,9 @@ namespace Synapse_Z
                 }
             }
         }
+
+   
+
         private async void ExecuteScript(string text)
         {
             if (GlobalVariables.injecting == false && GlobalVariables.isDone == true)

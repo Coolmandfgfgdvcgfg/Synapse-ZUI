@@ -29,45 +29,45 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptHub));
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.TopBar = new System.Windows.Forms.Panel();
             this.MiniBtn = new System.Windows.Forms.Button();
             this.synlabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.Minimize = new System.Windows.Forms.Button();
             this.Maximize = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Logo = new System.Windows.Forms.PictureBox();
             this.ScriptHubBox = new System.Windows.Forms.ListBox();
             this.DisplayBox = new System.Windows.Forms.PictureBox();
             this.Execute = new System.Windows.Forms.Button();
             this.CloseBtn = new System.Windows.Forms.Button();
             this.Description = new System.Windows.Forms.RichTextBox();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.TopBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DisplayBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel2
+            // TopBar
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
-            this.panel2.Controls.Add(this.MiniBtn);
-            this.panel2.Controls.Add(this.synlabel);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.Minimize);
-            this.panel2.Controls.Add(this.Maximize);
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(464, 31);
-            this.panel2.TabIndex = 3;
-            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
-            this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
-            this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
+            this.TopBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.TopBar.Controls.Add(this.MiniBtn);
+            this.TopBar.Controls.Add(this.synlabel);
+            this.TopBar.Controls.Add(this.button1);
+            this.TopBar.Controls.Add(this.Minimize);
+            this.TopBar.Controls.Add(this.Maximize);
+            this.TopBar.Controls.Add(this.Logo);
+            this.TopBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TopBar.Location = new System.Drawing.Point(0, 0);
+            this.TopBar.Name = "TopBar";
+            this.TopBar.Size = new System.Drawing.Size(464, 31);
+            this.TopBar.TabIndex = 3;
+            this.TopBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.TopBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.TopBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
             // MiniBtn
             // 
             this.MiniBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.MiniBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.MiniBtn.BackColor = System.Drawing.Color.Transparent;
             this.MiniBtn.FlatAppearance.BorderSize = 0;
             this.MiniBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
             this.MiniBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(78)))));
@@ -88,6 +88,7 @@
             // 
             this.synlabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.synlabel.BackColor = System.Drawing.Color.Transparent;
             this.synlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.synlabel.ForeColor = System.Drawing.Color.White;
             this.synlabel.Location = new System.Drawing.Point(35, 0);
@@ -151,15 +152,16 @@
             this.Maximize.Text = "M";
             this.Maximize.UseVisualStyleBackColor = false;
             // 
-            // pictureBox1
+            // Logo
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(23, 23);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.Logo.BackColor = System.Drawing.Color.Transparent;
+            this.Logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Logo.BackgroundImage")));
+            this.Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Logo.Location = new System.Drawing.Point(3, 3);
+            this.Logo.Name = "Logo";
+            this.Logo.Size = new System.Drawing.Size(23, 23);
+            this.Logo.TabIndex = 0;
+            this.Logo.TabStop = false;
             // 
             // ScriptHubBox
             // 
@@ -250,15 +252,15 @@
             this.Controls.Add(this.Execute);
             this.Controls.Add(this.DisplayBox);
             this.Controls.Add(this.ScriptHubBox);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.TopBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ScriptHub";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ScriptHub";
             this.TopMost = true;
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.TopBar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DisplayBox)).EndInit();
             this.ResumeLayout(false);
 
@@ -266,7 +268,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel TopBar;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button Minimize;
         private System.Windows.Forms.Label synlabel;
@@ -278,5 +280,6 @@
         private System.Windows.Forms.Button Execute;
         private System.Windows.Forms.Button CloseBtn;
         private System.Windows.Forms.RichTextBox Description;
+        private System.Windows.Forms.PictureBox Logo;
     }
 }

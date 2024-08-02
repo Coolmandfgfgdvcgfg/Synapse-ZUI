@@ -21,6 +21,8 @@ namespace Synapse_Z
         public AccountKeyPrompt()
         {
             InitializeComponent();
+            ThemeManager.Instance.ApplyTheme(this);
+
             string ranString = GenerateRandomString(12);
             this.Text = ranString;
             this.ShowInTaskbar = true;
@@ -28,6 +30,7 @@ namespace Synapse_Z
             SystemSounds.Asterisk.Play();
             this.Opacity = 0; // Set initial opacity to 0
 
+            synlabel.Text = $"{GlobalVariables.ExploitName} - Account Key System";
             // Initialize and start the fade-in timer
             fadeInTimer = new Timer();
             fadeInTimer.Interval = 5; // Set the timer interval (50ms)

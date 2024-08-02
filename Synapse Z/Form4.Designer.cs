@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.TopBar = new System.Windows.Forms.Panel();
             this.Minimize = new System.Windows.Forms.Button();
             this.Close = new System.Windows.Forms.Button();
             this.synlabel = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Logo = new System.Windows.Forms.PictureBox();
             this.TabClosingPrompt = new System.Windows.Forms.CheckBox();
             this.ClearEditorPrompt = new System.Windows.Forms.CheckBox();
             this.TopMostCheck = new System.Windows.Forms.CheckBox();
@@ -41,31 +41,31 @@
             this.AutoInject = new System.Windows.Forms.CheckBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.KillRBLX = new System.Windows.Forms.Button();
+            this.ClientManager = new System.Windows.Forms.Button();
             this.Reset = new System.Windows.Forms.Button();
             this.EnterKey = new System.Windows.Forms.Button();
             this.GetCurrentKey = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.mainPanel = new System.Windows.Forms.Panel();
+            this.TopBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
+            this.mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel2
+            // TopBar
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
-            this.panel2.Controls.Add(this.Minimize);
-            this.panel2.Controls.Add(this.Close);
-            this.panel2.Controls.Add(this.synlabel);
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(330, 31);
-            this.panel2.TabIndex = 2;
-            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
-            this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
-            this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
+            this.TopBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.TopBar.Controls.Add(this.Minimize);
+            this.TopBar.Controls.Add(this.Close);
+            this.TopBar.Controls.Add(this.synlabel);
+            this.TopBar.Controls.Add(this.Logo);
+            this.TopBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TopBar.Location = new System.Drawing.Point(0, 0);
+            this.TopBar.Name = "TopBar";
+            this.TopBar.Size = new System.Drawing.Size(330, 31);
+            this.TopBar.TabIndex = 2;
+            this.TopBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.TopBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.TopBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
             // Minimize
             // 
@@ -111,11 +111,12 @@
             // 
             this.synlabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.synlabel.BackColor = System.Drawing.Color.Transparent;
             this.synlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.synlabel.ForeColor = System.Drawing.Color.White;
-            this.synlabel.Location = new System.Drawing.Point(33, 0);
+            this.synlabel.Location = new System.Drawing.Point(51, 0);
             this.synlabel.Name = "synlabel";
-            this.synlabel.Size = new System.Drawing.Size(252, 31);
+            this.synlabel.Size = new System.Drawing.Size(227, 31);
             this.synlabel.TabIndex = 1;
             this.synlabel.Text = "Synapse Z - Options";
             this.synlabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -123,15 +124,15 @@
             this.synlabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.synlabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
-            // pictureBox1
+            // Logo
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(4, 4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(23, 23);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.Logo.BackgroundImage = global::Synapse_Z.Properties.Resources.syn2_JoE_icon;
+            this.Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Logo.Location = new System.Drawing.Point(4, 4);
+            this.Logo.Name = "Logo";
+            this.Logo.Size = new System.Drawing.Size(23, 23);
+            this.Logo.TabIndex = 0;
+            this.Logo.TabStop = false;
             // 
             // TabClosingPrompt
             // 
@@ -210,6 +211,10 @@
             this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
+            "tomorrow_night_eighties",
+            "tomorrow_night",
+            "tomorrow_night_blue",
+            "tomorrow_night_bright",
             "chrome",
             "clouds",
             "crimson_editor",
@@ -241,10 +246,6 @@
             "pastel_on_dark",
             "solarized_dark",
             "terminal",
-            "tomorrow_night",
-            "tomorrow_night_blue",
-            "tomorrow_night_bright",
-            "tomorrow_night_eighties",
             "twilight"});
             this.comboBox1.Location = new System.Drawing.Point(17, 246);
             this.comboBox1.Name = "comboBox1";
@@ -264,23 +265,25 @@
             this.label1.Text = "Editor Theme";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // KillRBLX
+            // ClientManager
             // 
-            this.KillRBLX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.KillRBLX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
-            this.KillRBLX.FlatAppearance.BorderSize = 0;
-            this.KillRBLX.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
-            this.KillRBLX.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(80)))));
-            this.KillRBLX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.KillRBLX.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.KillRBLX.ForeColor = System.Drawing.Color.White;
-            this.KillRBLX.Location = new System.Drawing.Point(50, 187);
-            this.KillRBLX.Name = "KillRBLX";
-            this.KillRBLX.Size = new System.Drawing.Size(205, 26);
-            this.KillRBLX.TabIndex = 9;
-            this.KillRBLX.Text = "Kill Roblox";
-            this.KillRBLX.UseVisualStyleBackColor = false;
-            this.KillRBLX.Click += new System.EventHandler(this.KillRBLX_Click);
+            this.ClientManager.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ClientManager.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.ClientManager.FlatAppearance.BorderSize = 0;
+            this.ClientManager.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
+            this.ClientManager.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(80)))));
+            this.ClientManager.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClientManager.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ClientManager.ForeColor = System.Drawing.Color.White;
+            this.ClientManager.Location = new System.Drawing.Point(50, 187);
+            this.ClientManager.Name = "ClientManager";
+            this.ClientManager.Size = new System.Drawing.Size(205, 26);
+            this.ClientManager.TabIndex = 9;
+            this.ClientManager.Text = "Client Manager";
+            this.ClientManager.UseVisualStyleBackColor = false;
+            this.ClientManager.Click += new System.EventHandler(this.ClientManager_Click);
+            this.ClientManager.MouseEnter += new System.EventHandler(this.FlatButton_MouseEnter);
+            this.ClientManager.MouseLeave += new System.EventHandler(this.FlatButton_MouseLeave);
             // 
             // Reset
             // 
@@ -299,6 +302,8 @@
             this.Reset.Text = "Reset Settings";
             this.Reset.UseVisualStyleBackColor = false;
             this.Reset.Click += new System.EventHandler(this.Reset_Click);
+            this.Reset.MouseEnter += new System.EventHandler(this.FlatButton_MouseEnter);
+            this.Reset.MouseLeave += new System.EventHandler(this.FlatButton_MouseLeave);
             // 
             // EnterKey
             // 
@@ -317,6 +322,8 @@
             this.EnterKey.Text = "Set Current Key";
             this.EnterKey.UseVisualStyleBackColor = false;
             this.EnterKey.Click += new System.EventHandler(this.EnterKey_Click);
+            this.EnterKey.MouseEnter += new System.EventHandler(this.FlatButton_MouseEnter);
+            this.EnterKey.MouseLeave += new System.EventHandler(this.FlatButton_MouseLeave);
             // 
             // GetCurrentKey
             // 
@@ -335,25 +342,27 @@
             this.GetCurrentKey.Text = "Get Current Key";
             this.GetCurrentKey.UseVisualStyleBackColor = false;
             this.GetCurrentKey.Click += new System.EventHandler(this.GetCurrentKey_Click);
+            this.GetCurrentKey.MouseEnter += new System.EventHandler(this.FlatButton_MouseEnter);
+            this.GetCurrentKey.MouseLeave += new System.EventHandler(this.FlatButton_MouseLeave);
             // 
-            // panel1
+            // mainPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.panel1.Controls.Add(this.GetCurrentKey);
-            this.panel1.Controls.Add(this.EnterKey);
-            this.panel1.Controls.Add(this.Reset);
-            this.panel1.Controls.Add(this.KillRBLX);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.comboBox1);
-            this.panel1.Controls.Add(this.AutoInject);
-            this.panel1.Controls.Add(this.UnlockFPS);
-            this.panel1.Controls.Add(this.TopMostCheck);
-            this.panel1.Controls.Add(this.ClearEditorPrompt);
-            this.panel1.Controls.Add(this.TabClosingPrompt);
-            this.panel1.Location = new System.Drawing.Point(12, 37);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(306, 348);
-            this.panel1.TabIndex = 4;
+            this.mainPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.mainPanel.Controls.Add(this.GetCurrentKey);
+            this.mainPanel.Controls.Add(this.EnterKey);
+            this.mainPanel.Controls.Add(this.Reset);
+            this.mainPanel.Controls.Add(this.ClientManager);
+            this.mainPanel.Controls.Add(this.label1);
+            this.mainPanel.Controls.Add(this.comboBox1);
+            this.mainPanel.Controls.Add(this.AutoInject);
+            this.mainPanel.Controls.Add(this.UnlockFPS);
+            this.mainPanel.Controls.Add(this.TopMostCheck);
+            this.mainPanel.Controls.Add(this.ClearEditorPrompt);
+            this.mainPanel.Controls.Add(this.TabClosingPrompt);
+            this.mainPanel.Location = new System.Drawing.Point(12, 37);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Size = new System.Drawing.Size(306, 348);
+            this.mainPanel.TabIndex = 4;
             // 
             // Options
             // 
@@ -361,29 +370,29 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(330, 397);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.mainPanel);
+            this.Controls.Add(this.TopBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Options";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form4";
             this.Load += new System.EventHandler(this.Form4_Load);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.TopBar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
+            this.mainPanel.ResumeLayout(false);
+            this.mainPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel TopBar;
         private System.Windows.Forms.Button Minimize;
         private System.Windows.Forms.Button Close;
         private System.Windows.Forms.Label synlabel;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox Logo;
         private System.Windows.Forms.CheckBox TabClosingPrompt;
         private System.Windows.Forms.CheckBox ClearEditorPrompt;
         private System.Windows.Forms.CheckBox TopMostCheck;
@@ -391,10 +400,10 @@
         private System.Windows.Forms.CheckBox AutoInject;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button KillRBLX;
+        private System.Windows.Forms.Button ClientManager;
         private System.Windows.Forms.Button Reset;
         private System.Windows.Forms.Button EnterKey;
         private System.Windows.Forms.Button GetCurrentKey;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel mainPanel;
     }
 }

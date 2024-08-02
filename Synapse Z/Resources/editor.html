@@ -381,28 +381,6 @@
       editor.setTheme("ace/theme/" + th);
     }
 
-    // Commenting out CefSharp-related code for standalone testing
-    /*
-    editor.on("input", async function () {
-      await CefSharp.BindObjectAsync("synServiceAsync");
-      synServiceAsync.textChanged(editor.getValue());
-    });
-    
-    document.addEventListener('keydown', async e => {
-      if (e.ctrlKey) {
-        if (e.key === 's') {
-          e.preventDefault();
-          await CefSharp.BindObjectAsync("synServiceAsync");
-          synServiceAsync.saveRequest(editor.getValue());
-        } else if (e.key === 'o') {
-          e.preventDefault();
-          await CefSharp.BindObjectAsync("synServiceAsync");
-          synServiceAsync.openRequest();
-        }
-      }
-    });
-    */
-
     document.oncontextmenu = function () {
       return true;
     }

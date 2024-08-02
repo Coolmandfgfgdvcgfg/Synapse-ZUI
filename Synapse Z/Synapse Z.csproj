@@ -56,6 +56,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="ROBOCOPY &quot;$(TargetDir) &quot; &quot;$(TargetDir)lib\ &quot; /XF *.exe *.json *.config *.manifest &quot;Synapse Launcher.dll&quot; SpecificDll2.dll /XD lib logs data bin workspace autoexec crashlogs runtimes scripts /E /IS /MOVE&#xA;if %25errorlevel%25 leq 4 exit 0 else exit %25errorlevel%25" />
+    <Exec Command="ROBOCOPY &quot;$(TargetDir) &quot; &quot;$(TargetDir)lib\ &quot; /XF *.exe *.json *.config *.manifest &quot;Synapse Launcher.dll&quot; SpecificDll2.dll /XD lib logs data bin workspace theme autoexec crashlogs runtimes scripts /E /IS /MOVE&#xA;if %25errorlevel%25 leq 4 exit 0 else exit %25errorlevel%25" />
   </Target>
 </Project>

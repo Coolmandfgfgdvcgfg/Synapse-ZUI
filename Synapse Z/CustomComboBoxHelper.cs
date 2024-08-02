@@ -23,9 +23,9 @@ public class CustomComboBoxHelper
         if (e.Index < 0) return;
 
         // Set the colors
-        Color backColor = Color.FromArgb(61, 61, 61);
-        Color textColor = Color.White;
-        Color hoverColor = Color.FromArgb(54, 72, 88);
+        Color backColor = ThemeManager.Instance.GetThemeColor("Options.Button.BackColor");
+        Color textColor = ThemeManager.Instance.GetThemeColor("Options.Button.ForeColor");
+        Color hoverColor = ThemeManager.Instance.GetThemeColor("Options.Button.HoverColor");
         Color hoverBorderColor = Color.Gray;
 
         // Check if the item is selected or hovered
@@ -50,7 +50,7 @@ public class CustomComboBoxHelper
     {
         ComboBox comboBox = sender as ComboBox;
         Rectangle rect = new Rectangle(0, 0, comboBox.Width, comboBox.Height);
-        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(61, 61, 61)), rect);
+        e.Graphics.FillRectangle(new SolidBrush(ThemeManager.Instance.GetThemeColor("ScriptHub.ComboBox.BackColor")), rect);
         if (comboBox.Text != string.Empty)
         {
             e.Graphics.DrawString(comboBox.Text, comboBox.Font, Brushes.White, new Point(1, 4));

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Synapse_Z
 {
@@ -10,6 +9,7 @@ namespace Synapse_Z
         private static bool topMostGlobal = true;
         private static Action<bool> onTopMostGlobalChanged;
 
+        public static string CurrentEditorHTML { get; set; } = "";
         public static bool noSave { get; set; } = false;
         public static bool injecting { get; set; } = false;
         public static bool isDone { get; set; } = false;
@@ -19,6 +19,30 @@ namespace Synapse_Z
         public static bool UnlockFPS { get; set; } = false;
         public static string CurrentEditorTheme { get; set; } = "tomorrow_night_eighties";
         public static string CurrentKey { get; set; } = "";
+        public static string ExploitName { get; set; } = "Synapse Z";
+        public static bool ShowVersion { get; set; } = true;
+
+        private static ObservableDictionary<string, bool> executionPIDS = new ObservableDictionary<string, bool>();
+        public static event EventHandler ExecutionPIDSChanged
+        {
+            add => executionPIDS.DictionaryChanged += value;
+            remove => executionPIDS.DictionaryChanged -= value;
+        }
+
+        public static ObservableDictionary<string, bool> ExecutionPIDS
+        {
+            get => executionPIDS;
+        }
+
+        public static void UpdateExecutionPIDS(string key, bool value)
+        {
+            executionPIDS[key] = value;
+        }
+
+        public static void RemoveExecutionPID(string key)
+        {
+            executionPIDS.Remove(key);
+        }
 
         public static bool AutoInject
         {

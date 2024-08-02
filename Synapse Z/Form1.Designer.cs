@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SynapseZ));
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.TopBar = new System.Windows.Forms.Panel();
             this.Minimize = new System.Windows.Forms.Button();
             this.Close = new System.Windows.Forms.Button();
             this.Maximize = new System.Windows.Forms.Button();
             this.synlabel = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Logo = new System.Windows.Forms.PictureBox();
             this.Scriptbox = new System.Windows.Forms.ListBox();
             this.Execute = new System.Windows.Forms.Button();
             this.Clear = new System.Windows.Forms.Button();
@@ -46,33 +46,34 @@
             this.backPanel = new System.Windows.Forms.Panel();
             this.tabControl1 = new Manina.Windows.Forms.TabControl();
             this.ExampleTab = new Manina.Windows.Forms.Tab();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.ExecuteFile = new System.Windows.Forms.Button();
+            this.TopBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.backPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel2
+            // TopBar
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
-            this.panel2.Controls.Add(this.Minimize);
-            this.panel2.Controls.Add(this.Close);
-            this.panel2.Controls.Add(this.Maximize);
-            this.panel2.Controls.Add(this.synlabel);
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(853, 31);
-            this.panel2.TabIndex = 1;
-            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
-            this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
-            this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
+            this.TopBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.TopBar.Controls.Add(this.Minimize);
+            this.TopBar.Controls.Add(this.Close);
+            this.TopBar.Controls.Add(this.Maximize);
+            this.TopBar.Controls.Add(this.synlabel);
+            this.TopBar.Controls.Add(this.Logo);
+            this.TopBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TopBar.Location = new System.Drawing.Point(0, 0);
+            this.TopBar.Name = "TopBar";
+            this.TopBar.Size = new System.Drawing.Size(853, 31);
+            this.TopBar.TabIndex = 1;
+            this.TopBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.TopBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.TopBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
             // Minimize
             // 
             this.Minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Minimize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.Minimize.BackColor = System.Drawing.Color.Transparent;
             this.Minimize.FlatAppearance.BorderSize = 0;
             this.Minimize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
             this.Minimize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(78)))));
@@ -92,7 +93,7 @@
             // Close
             // 
             this.Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Close.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.Close.BackColor = System.Drawing.Color.Transparent;
             this.Close.FlatAppearance.BorderSize = 0;
             this.Close.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
             this.Close.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(78)))));
@@ -112,7 +113,7 @@
             // Maximize
             // 
             this.Maximize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Maximize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.Maximize.BackColor = System.Drawing.Color.Transparent;
             this.Maximize.FlatAppearance.BorderSize = 0;
             this.Maximize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
             this.Maximize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(78)))));
@@ -133,6 +134,7 @@
             // 
             this.synlabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.synlabel.BackColor = System.Drawing.Color.Transparent;
             this.synlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.synlabel.ForeColor = System.Drawing.Color.White;
             this.synlabel.Location = new System.Drawing.Point(33, 0);
@@ -145,15 +147,16 @@
             this.synlabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.synlabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
-            // pictureBox1
+            // Logo
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(4, 4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(23, 23);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.Logo.BackColor = System.Drawing.Color.Transparent;
+            this.Logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Logo.BackgroundImage")));
+            this.Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Logo.Location = new System.Drawing.Point(4, 4);
+            this.Logo.Name = "Logo";
+            this.Logo.Size = new System.Drawing.Size(23, 23);
+            this.Logo.TabIndex = 0;
+            this.Logo.TabStop = false;
             // 
             // Scriptbox
             // 
@@ -183,7 +186,7 @@
             this.Execute.ForeColor = System.Drawing.Color.White;
             this.Execute.Location = new System.Drawing.Point(4, 342);
             this.Execute.Name = "Execute";
-            this.Execute.Size = new System.Drawing.Size(110, 35);
+            this.Execute.Size = new System.Drawing.Size(95, 35);
             this.Execute.TabIndex = 3;
             this.Execute.Text = "Execute";
             this.Execute.UseVisualStyleBackColor = false;
@@ -201,9 +204,9 @@
             this.Clear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Clear.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Clear.ForeColor = System.Drawing.Color.White;
-            this.Clear.Location = new System.Drawing.Point(120, 342);
+            this.Clear.Location = new System.Drawing.Point(105, 342);
             this.Clear.Name = "Clear";
-            this.Clear.Size = new System.Drawing.Size(110, 35);
+            this.Clear.Size = new System.Drawing.Size(95, 35);
             this.Clear.TabIndex = 3;
             this.Clear.Text = "Clear";
             this.Clear.UseVisualStyleBackColor = false;
@@ -221,9 +224,9 @@
             this.OpenFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OpenFile.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.OpenFile.ForeColor = System.Drawing.Color.White;
-            this.OpenFile.Location = new System.Drawing.Point(236, 342);
+            this.OpenFile.Location = new System.Drawing.Point(206, 342);
             this.OpenFile.Name = "OpenFile";
-            this.OpenFile.Size = new System.Drawing.Size(110, 35);
+            this.OpenFile.Size = new System.Drawing.Size(95, 35);
             this.OpenFile.TabIndex = 3;
             this.OpenFile.Text = "Open File";
             this.OpenFile.UseVisualStyleBackColor = false;
@@ -241,9 +244,9 @@
             this.SaveFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveFile.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SaveFile.ForeColor = System.Drawing.Color.White;
-            this.SaveFile.Location = new System.Drawing.Point(352, 342);
+            this.SaveFile.Location = new System.Drawing.Point(408, 342);
             this.SaveFile.Name = "SaveFile";
-            this.SaveFile.Size = new System.Drawing.Size(110, 35);
+            this.SaveFile.Size = new System.Drawing.Size(95, 35);
             this.SaveFile.TabIndex = 3;
             this.SaveFile.Text = "Save File";
             this.SaveFile.UseVisualStyleBackColor = false;
@@ -261,9 +264,9 @@
             this.Options.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Options.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Options.ForeColor = System.Drawing.Color.White;
-            this.Options.Location = new System.Drawing.Point(468, 342);
+            this.Options.Location = new System.Drawing.Point(509, 342);
             this.Options.Name = "Options";
-            this.Options.Size = new System.Drawing.Size(110, 35);
+            this.Options.Size = new System.Drawing.Size(95, 35);
             this.Options.TabIndex = 3;
             this.Options.Text = "Options";
             this.Options.UseVisualStyleBackColor = false;
@@ -281,9 +284,9 @@
             this.ScriptHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ScriptHub.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ScriptHub.ForeColor = System.Drawing.Color.White;
-            this.ScriptHub.Location = new System.Drawing.Point(739, 342);
+            this.ScriptHub.Location = new System.Drawing.Point(754, 342);
             this.ScriptHub.Name = "ScriptHub";
-            this.ScriptHub.Size = new System.Drawing.Size(110, 35);
+            this.ScriptHub.Size = new System.Drawing.Size(95, 35);
             this.ScriptHub.TabIndex = 3;
             this.ScriptHub.Text = "Script Hub";
             this.ScriptHub.UseVisualStyleBackColor = false;
@@ -301,9 +304,9 @@
             this.Attach.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Attach.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Attach.ForeColor = System.Drawing.Color.White;
-            this.Attach.Location = new System.Drawing.Point(623, 342);
+            this.Attach.Location = new System.Drawing.Point(653, 342);
             this.Attach.Name = "Attach";
-            this.Attach.Size = new System.Drawing.Size(110, 35);
+            this.Attach.Size = new System.Drawing.Size(95, 35);
             this.Attach.TabIndex = 3;
             this.Attach.Text = "Attach";
             this.Attach.UseVisualStyleBackColor = false;
@@ -330,6 +333,7 @@
             this.tabControl1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tabControl1.CloseTabImage = global::Synapse_Z.Properties.Resources.Xn;
             this.tabControl1.Controls.Add(this.ExampleTab);
+            this.tabControl1.ForeColor = System.Drawing.Color.Black;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -348,6 +352,26 @@
             this.ExampleTab.Size = new System.Drawing.Size(704, 277);
             this.ExampleTab.Text = "Script 1";
             // 
+            // ExecuteFile
+            // 
+            this.ExecuteFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ExecuteFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.ExecuteFile.FlatAppearance.BorderSize = 0;
+            this.ExecuteFile.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
+            this.ExecuteFile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(80)))));
+            this.ExecuteFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExecuteFile.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ExecuteFile.ForeColor = System.Drawing.Color.White;
+            this.ExecuteFile.Location = new System.Drawing.Point(307, 342);
+            this.ExecuteFile.Name = "ExecuteFile";
+            this.ExecuteFile.Size = new System.Drawing.Size(95, 35);
+            this.ExecuteFile.TabIndex = 3;
+            this.ExecuteFile.Text = "Execute File";
+            this.ExecuteFile.UseVisualStyleBackColor = false;
+            this.ExecuteFile.Click += new System.EventHandler(this.ExecuteFile_Click);
+            this.ExecuteFile.MouseEnter += new System.EventHandler(this.FlatButton_MouseEnter);
+            this.ExecuteFile.MouseLeave += new System.EventHandler(this.FlatButton_MouseLeave);
+            // 
             // SynapseZ
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
@@ -356,20 +380,21 @@
             this.Controls.Add(this.Attach);
             this.Controls.Add(this.ScriptHub);
             this.Controls.Add(this.Options);
+            this.Controls.Add(this.ExecuteFile);
             this.Controls.Add(this.SaveFile);
             this.Controls.Add(this.OpenFile);
             this.Controls.Add(this.Clear);
             this.Controls.Add(this.Execute);
             this.Controls.Add(this.Scriptbox);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.TopBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SynapseZ";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
             this.Load += new System.EventHandler(this.SynapseZ_Load);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.TopBar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
             this.backPanel.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -386,7 +411,7 @@
         private System.Windows.Forms.Label synTitle;
         private System.Windows.Forms.Button MinimizeButton;
         private System.Windows.Forms.Button MaximizeButton;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel TopBar;
         private System.Windows.Forms.Label synlabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ListBox Scriptbox;
@@ -403,6 +428,8 @@
         private System.Windows.Forms.Panel backPanel;
         private Manina.Windows.Forms.TabControl tabControl1;
         private Manina.Windows.Forms.Tab ExampleTab;
+        private System.Windows.Forms.PictureBox Logo;
+        private System.Windows.Forms.Button ExecuteFile;
     }
 }
 

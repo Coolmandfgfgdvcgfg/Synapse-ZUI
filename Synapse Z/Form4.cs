@@ -26,12 +26,13 @@ namespace Synapse_Z
         private bool topBarMouseDown;
         private Point offset;
         private Timer fadeInTimer;
-
+        private ClientManager clientFormInstance;
 
         public Options()
         {
             InitializeComponent();
-
+            ThemeManager.Instance.ApplyTheme(this);
+            synlabel.Text = $"{GlobalVariables.ExploitName} - Options";
             string ranString = GenerateRandomString(12);
             this.Text = ranString;
             this.ShowInTaskbar = true;
@@ -51,9 +52,56 @@ namespace Synapse_Z
             TabClosingPrompt.Checked = GlobalVariables.TabClosingPrompt;
             UnlockFPS.Checked = GlobalVariables.UnlockFPS;
 
-            comboBox1.SelectedItem = GlobalVariables.CurrentEditorTheme;
+            
 
+            var editorThemes = ThemeManager.Instance.GetEditorThemes();
 
+            // Check if the "Editor Themes" section contains more than one non-empty or non-null theme
+            var validThemes = editorThemes.Where(theme => !string.IsNullOrEmpty(theme.ToString())).ToList();
+
+            if (validThemes.Count > 0)
+            {
+                PopulateEditorThemes();
+            } else
+            {
+                int index = comboBox1.FindStringExact(GlobalVariables.CurrentEditorTheme);
+
+                if (index != -1)
+                {
+                    comboBox1.SelectedIndex = index;
+                    comboBox1.SelectedItem = GlobalVariables.CurrentEditorTheme;
+                }
+                else
+                {
+                    comboBox1.SelectedIndex = 0;
+                    comboBox1.SelectedItem = GlobalVariables.CurrentEditorTheme;
+                }
+            }
+        }
+        private void PopulateEditorThemes()
+        {
+            // Clear existing items
+            comboBox1.Items.Clear();
+
+            // Get the editor themes from ThemeManager
+            var editorThemes = ThemeManager.Instance.GetEditorThemes();
+
+            // Add each editor theme to the ComboBox
+            foreach (var theme in editorThemes)
+            {
+                comboBox1.Items.Add(theme.ToString());
+            }
+
+            int index = comboBox1.FindStringExact(GlobalVariables.CurrentEditorTheme);
+
+            if (index != -1)
+            {
+                comboBox1.SelectedIndex = index;
+            }
+            else
+            {
+                comboBox1.SelectedIndex = 0;
+            }
         }
 
         private void FadeInTimer_Tick(object sender, EventArgs e)
@@ -213,27 +261,6 @@ namespace Synapse_Z
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void KillRBLX_Click(object sender, EventArgs e)
-        {
-            // Get all processes with the name RobloxPlayerBeta
-            Process[] processes = Process.GetProcessesByName("RobloxPlayerBeta");
-
-            // Loop through each process and kill it
-            foreach (Process process in processes)
-            {
-                try
-                {
-                    process.Kill();
-                    process.WaitForExit(); // Optional, waits for the process to exit
-                    MessageBox.Show($"Process {process.ProcessName} (ID: {process.Id}) has been killed.");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Failed to kill process {process.ProcessName} (ID: {process.Id}): {ex.Message}");
-                }
-            }
-        }
-
         private void Reset_Click(object sender, EventArgs e)
         {
             // Show confirmation box
@@ -291,6 +318,25 @@ namespace Synapse_Z
             } else
             {
                 MessageBox.Show("No current key!", "Error!");
+            }
+        }
+
+        private void ClientManager_Click(object sender, EventArgs e)
+        {
+            if (clientFormInstance == null || clientFormInstance.IsDisposed)
+            {
+                // Create a new instance if it doesn't exist or is disposed
+                clientFormInstance = new ClientManager();
+
+
+                // Show the subform
+                clientFormInstance.Show();
+            }
+            else
+            {
+                // Bring the existing form to the front
+                clientFormInstance.WindowState = FormWindowState.Normal;
+                clientFormInstance.BringToFront();
             }
         }
     }

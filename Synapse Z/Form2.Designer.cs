@@ -29,41 +29,41 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountKeyPrompt));
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.TopBar = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.Minimize = new System.Windows.Forms.Button();
             this.synlabel = new System.Windows.Forms.Label();
             this.Close = new System.Windows.Forms.Button();
             this.Maximize = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Logo = new System.Windows.Forms.PictureBox();
             this.KeyBox = new System.Windows.Forms.TextBox();
             this.SendKey = new System.Windows.Forms.Button();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.TopBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel2
+            // TopBar
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.Minimize);
-            this.panel2.Controls.Add(this.synlabel);
-            this.panel2.Controls.Add(this.Close);
-            this.panel2.Controls.Add(this.Maximize);
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(530, 31);
-            this.panel2.TabIndex = 2;
-            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
-            this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
-            this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
+            this.TopBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.TopBar.Controls.Add(this.button1);
+            this.TopBar.Controls.Add(this.Minimize);
+            this.TopBar.Controls.Add(this.synlabel);
+            this.TopBar.Controls.Add(this.Close);
+            this.TopBar.Controls.Add(this.Maximize);
+            this.TopBar.Controls.Add(this.Logo);
+            this.TopBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TopBar.Location = new System.Drawing.Point(0, 0);
+            this.TopBar.Name = "TopBar";
+            this.TopBar.Size = new System.Drawing.Size(530, 31);
+            this.TopBar.TabIndex = 2;
+            this.TopBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.TopBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.TopBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            this.button1.BackColor = System.Drawing.Color.Transparent;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(72)))), ((int)(((byte)(88)))));
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(78)))));
@@ -101,13 +101,14 @@
             // 
             this.synlabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.synlabel.BackColor = System.Drawing.Color.Transparent;
             this.synlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.synlabel.ForeColor = System.Drawing.Color.White;
-            this.synlabel.Location = new System.Drawing.Point(168, 0);
+            this.synlabel.Location = new System.Drawing.Point(131, 0);
             this.synlabel.Name = "synlabel";
-            this.synlabel.Size = new System.Drawing.Size(197, 31);
+            this.synlabel.Size = new System.Drawing.Size(265, 31);
             this.synlabel.TabIndex = 1;
-            this.synlabel.Text = "Account Key System";
+            this.synlabel.Text = "Synapse Z - Account Key System";
             this.synlabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.synlabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             this.synlabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
@@ -147,15 +148,16 @@
             this.Maximize.Text = "M";
             this.Maximize.UseVisualStyleBackColor = false;
             // 
-            // pictureBox1
+            // Logo
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 5);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(23, 23);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.Logo.BackColor = System.Drawing.Color.Transparent;
+            this.Logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Logo.BackgroundImage")));
+            this.Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Logo.Location = new System.Drawing.Point(3, 5);
+            this.Logo.Name = "Logo";
+            this.Logo.Size = new System.Drawing.Size(23, 23);
+            this.Logo.TabIndex = 0;
+            this.Logo.TabStop = false;
             // 
             // KeyBox
             // 
@@ -198,15 +200,15 @@
             this.ClientSize = new System.Drawing.Size(530, 120);
             this.Controls.Add(this.SendKey);
             this.Controls.Add(this.KeyBox);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.TopBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AccountKeyPrompt";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AccountKeyPrompt";
             this.TopMost = true;
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.TopBar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,7 +216,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel TopBar;
         private System.Windows.Forms.Button Minimize;
         private System.Windows.Forms.Label synlabel;
         private System.Windows.Forms.Button Close;
@@ -223,5 +225,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox KeyBox;
         private System.Windows.Forms.Button SendKey;
+        private System.Windows.Forms.PictureBox Logo;
     }
 }
