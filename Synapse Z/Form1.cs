@@ -2031,7 +2031,7 @@ namespace Synapse_Z
                             GlobalVariables.injecting = true;
 
                             // Update synlabel text
-                            UpdateLabelText($"{GlobalVariables.ExploitName} (Re-Injecting...)");
+                            UpdateLabelText($"{FinishedExpTop} (Re-Injecting...)");
 
                             // Add to ExecutionPIDS and attach close event for abort
                             AddToExecutionPIDS(pid);
@@ -2043,10 +2043,10 @@ namespace Synapse_Z
 
                             await Task.Delay(100); // Add a slight delay
 
-                            UpdateLabelText($"{GlobalVariables.ExploitName} (Ready!)");
+                            UpdateLabelText($"{FinishedExpTop} (Ready!)");
                             await Task.Delay(1000); // Add a slight delay
 
-                            UpdateLabelText($"{GlobalVariables.ExploitName}");
+                            UpdateLabelText($"{FinishedExpTop}");
                         }
                     }
                     catch (ArgumentException)
