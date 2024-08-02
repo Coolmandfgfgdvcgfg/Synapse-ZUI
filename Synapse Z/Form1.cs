@@ -56,7 +56,7 @@ namespace Synapse_Z
 
 
         private static readonly HttpClient client = new HttpClient();
-        private const string currentVersion = "v1.0.6"; // Replace with the current version of your application
+        private const string currentVersion = "v1.0.7"; // Replace with the current version of your application
 
         private static SynapseZ _instance;
 
@@ -2026,27 +2026,37 @@ namespace Synapse_Z
                     try
                     {
                         Process reinjectProcess = Process.GetProcessById(pid);
-                        if (!GlobalVariables.ExecutionPIDS.ContainsKey(pid.ToString()))
+
+                        // Check if the process is still running
+                        if (!reinjectProcess.HasExited)
                         {
-                            GlobalVariables.injecting = true;
+                            if (!GlobalVariables.ExecutionPIDS.ContainsKey(pid.ToString()))
+                            {
+                                GlobalVariables.injecting = true;
 
-                            // Update synlabel text
-                            UpdateLabelText($"{FinishedExpTop} (Re-Injecting...)");
+                                // Update synlabel text
+                                UpdateLabelText($"{FinishedExpTop} (Re-Injecting...)");
 
-                            // Add to ExecutionPIDS and attach close event for abort
-                            AddToExecutionPIDS(pid);
-                            reinjectProcess.EnableRaisingEvents = true;
-                            reinjectProcess.Exited += (s, e) => Abort(pid);
+                                // Add to ExecutionPIDS and attach close event for abort
+                                AddToExecutionPIDS(pid);
+                                reinjectProcess.EnableRaisingEvents = true;
+                                reinjectProcess.Exited += (s, e) => Abort(pid);
 
-                            GlobalVariables.injecting = false;
-                            GlobalVariables.isDone = true;
+                                GlobalVariables.injecting = false;
+                                GlobalVariables.isDone = true;
 
-                            await Task.Delay(100); // Add a slight delay
+                                await Task.Delay(100); // Add a slight delay
 
-                            UpdateLabelText($"{FinishedExpTop} (Ready!)");
-                            await Task.Delay(1000); // Add a slight delay
+                                UpdateLabelText($"{FinishedExpTop} (Ready!)");
+                                await Task.Delay(1000); // Add a slight delay
 
-                            UpdateLabelText($"{FinishedExpTop}");
+                                UpdateLabelText($"{FinishedExpTop}");
+                            }
+                        }
+                        else
+                        {
+                            // Process has exited, add to the list of PIDs to remove
+                            pidsToRemove.Add(pid);
                         }
                     }
                     catch (ArgumentException)

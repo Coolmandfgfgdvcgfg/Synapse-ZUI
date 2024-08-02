@@ -190,10 +190,13 @@ namespace Synapse_Z
             }
         }
 
-   
 
-        private async void ExecuteScript(string text)
+
+        private async void ExecuteScript(string script, string pid = null)
         {
+            string uniqueId = Guid.NewGuid().ToString(); // Generate a unique identifier
+
+            await Task.Delay(1);
             if (GlobalVariables.injecting == false && GlobalVariables.isDone == true)
             {
                 try
@@ -204,10 +207,12 @@ namespace Synapse_Z
                         Directory.CreateDirectory(schedulerPath);
                     }
 
-                    string filePath = Path.Combine(schedulerPath, Guid.NewGuid().ToString() + ".lua");
+                    // Name the file according to the pid if provided
+                    string fileName = pid != null ? $"PID{pid}_{Guid.NewGuid().ToString()}.lua" : $"{Guid.NewGuid().ToString()}.lua";
+                    string filePath = Path.Combine(schedulerPath, fileName);
                     using (StreamWriter writer = new StreamWriter(filePath))
                     {
-                        await writer.WriteLineAsync(text + "@@FileFullyWritten@@");
+                        await writer.WriteLineAsync(script + "@@FileFullyWritten@@");
                     }
                 }
                 catch (Exception ex)
@@ -218,6 +223,25 @@ namespace Synapse_Z
             else
             {
                 MessageBox.Show("Not Injected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ExecuteForSelectedClients(string unescapedString)
+        {
+            bool anySelected = false;
+
+            foreach (var entry in GlobalVariables.ExecutionPIDS)
+            {
+                if ((bool)entry.Value)  // If the status is True
+                {
+                    anySelected = true;
+                    ExecuteScript(unescapedString, entry.Key);
+                }
+            }
+
+            if (!anySelected)
+            {
+                MessageBox.Show("No selected clients.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -240,7 +264,7 @@ namespace Synapse_Z
                         // Read the contents of the main.lua file
                         string fileContent = File.ReadAllText(mainLuaPath);
 
-                       ExecuteScript(fileContent);
+                       ExecuteForSelectedClients(fileContent);
                     }
                     catch (Exception ex)
                     {
