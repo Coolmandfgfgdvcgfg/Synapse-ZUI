@@ -1,4 +1,4 @@
-# Synapse-Z UI
+# Synapse-Z UI (OLD READ DESC) 
 
 Hey everyone, thank you for using my UI. This was a great learning experience for me, I am now working on a new version of my UI, this UI will no longer be updated, however it will continue to work completely fine if you choose to continue using it. 
 I will update you all when my new UI is ready to be used.
