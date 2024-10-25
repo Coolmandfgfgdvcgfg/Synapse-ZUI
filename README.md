@@ -1,4 +1,8 @@
 # Synapse-Z UI
+
+Hey everyone, thank you for using my UI. This was a great learning experience for me, I am now working on a new version of my UI, this UI will no longer be updated, however it will continue to work completely fine if you choose to continue using it. 
+I will update you all when my new UI is ready to be used.
+
 A remake of Synapse X's 2022 UI in C# specifically made for the Syn-Z executor, completely open source for anyone to modify and create their own UIs with.
 
 Synapse-Z Official [[Discord](https://discord.gg/synz)]
